@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>行内元素和块元素的padding的区别</title>
+  <style>
+		#d1{
+			width:600px;
+			height:600px;
+			background:#f00;
+		}
+		#d1:before,#d2:before{ /*这个为什么要写，不写可以试试看，另外一个知识点，因为不写就是老师说的父元素上面没有东西拦着它，子元素设置margin-top就会作用到父元素身上*/
+			content:"";
+			display:table;
+		}
+		#d2{
+			width:400px;
+			height:400px;
+			margin:100px; /*为了让d2在d1中居中*/
+			background:#0f0;
+			position:relative; /*这个写了就是d3以d2为参考，不写就是d3以body为参考*/
+		}
+		#d3{
+			width:200px;
+			height:200px;
+			margin:100px;/*为了让d3在d2中居中*/
+			background:#00f;
+			position:absolute;
+			left:50px;/*可能我们看到的效果和你不一样，但是去浏览器f12看，要考虑到d3还有margin:100px;这个也要考虑进去的！！！！*/
+		}
+  </style>
+ </head>
+ <body>
+	<div id="d1">
+		<div id="d2">
+			<div id="d3">
+			</div>
+		</div>
+	</div>
+ </body>
+</html>

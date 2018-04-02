@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>行内元素和块元素的margin的区别</title>
+  <style>
+	#d1{
+		height:100px;
+		background:#f00;
+	}
+
+	#d2{
+		height:100px;
+		background:#0f0;
+	}
+	#s1{
+		margin:10px; /*上下无效，左右有效*/
+		border:1px solid #00f;
+	}
+	#d3{
+		margin:10px; /*上下左右都有效*/
+		border:1px solid #00f;
+	}
+  </style>
+ </head>
+ <body>
+	<h3>说明：首先，行内元素的上下margin无效，左右有效；块元素上下左右margin都有效</h3>
+	<div id="d1"></div>
+	<a>11</a><span id="s1">我是行内元素，上下margin无效，左右margin有效</span><b>33</b>
+	<div id="d2"></div>
+	<hr/>
+	<div id="d1"></div>
+	<div id="d3">我是块元素，我的上下左右margin都有效果</div>
+	<div id="d2"></div>
+ </body>
+</html>

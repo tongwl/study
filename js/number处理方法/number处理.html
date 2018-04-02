@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>number处理方法，加油，真</title>
+ </head>
+ <body>
+	<script>
+	//parseInt
+		/*console.log(parseInt("123.2sasfd")); //输出123
+		console.log(parseInt("-123.2sasfd")); //输出-123
+		console.log(parseInt("+123.2sasfd")); //输出123
+		console.log(parseInt("12+3.2sasfd")); //输出12
+		console.log(parseInt("a123")); //NaN
+		console.log(parseInt("10120123",2));//5
+		console.log(parseInt("123",3));//5
+		console.log(parseInt("ag1",16));//10
+		console.log(parseInt("01",1));//NaN
+		console.log(parseInt("01",37));//NaN
+		*/
+	//Number
+		/*
+		console.log(Number("123.45")); //123.45
+		console.log(Number("123a")); //NaN
+		console.log(Number(true)); //1
+		console.log(Number(false)); //0
+		console.log(Number(undefined)); //NaN
+		console.log(Number(null)); //0
+		console.log(Number({})); //NaN
+		console.log(Number([])); //0
+		console.log(Number([1])); //1
+		console.log(Number([1,2])); //NaN
+		*/
+	//isNaN
+		/*console.log(isNaN(true)); //false
+		console.log(isNaN(false));//false
+		console.log(isNaN("123.45"));//false
+		console.log(isNaN("123.a"));//true
+		console.log(isNaN(undefined));//true
+		console.log(isNaN(null));//false
+		console.log(isNaN({}));//true
+		console.log(isNaN([]));//false
+		console.log(isNaN(['1']));//false
+		console.log(isNaN([1,2]));//true
+		*/
+	//isFinite
+		/*console.log(isFinite(true));//true
+		console.log(isFinite(false));//true
+		console.log(isFinite("123.45"));//true
+		console.log(isFinite("123.a"));//false
+		console.log(isFinite(undefined));//false
+		console.log(isFinite(null));//true
+		console.log(isFinite({}));//false
+		console.log(isFinite([]));//true
+		console.log(isFinite([1]));//true
+		console.log(isFinite([1,2]));//false
+		console.log(isFinite(1/0));//false 
+		console.log(1/0); //Infinity(无限的)
+		*/
+	//toFixed
+		/*
+		//console.log(111.toFixed(2)); //报错，111后面的.是小数的.还是方法的.  可以先定义成一个变量，然后再跟.toFixed；也可以111..toFixed(2) 也可以(111).toFixed(2) 也可以111 .toFixed(2)
+		var test=122.234;
+		console.log(test.toFixed()); //"122"
+		console.log(test.toFixed(2));//"122.23"
+		//console.log(test.toFixed(22));//报错,必须在0到20范围内(视浏览器情况而定)
+		console.log(test.toFixed("1"));///"122.2"
+		console.log(test.toFixed(true));//"122.2"
+		console.log(test.toFixed(false));//"122"
+		console.log(test.toFixed([]));//"122"
+		var str="122.234";
+		console.log(str.toFixed()); //报错，因为str是字符串，String构造函数的原型对象是没有toFixed方法的，所以str不能用toFixed
+		*/
+		//console.log(Math.ceil(Math.random(0,1)*3)); //随机取1到3的整数值
+	</script>
+ </body>
+</html>

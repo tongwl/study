@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>行内元素和块元素的padding的区别</title>
+  <style>
+		#d1{
+			width:300px;
+			height:300px;
+			float:left;
+			background:#00f;
+		}
+		#d2{
+			width:300px;
+			height:300px;
+			float:left;
+			background:#0f0;
+			position:relative;
+			left:-20px;
+			top:20px;
+		}
+		#d3{
+			width:300px;
+			height:300px;
+			float:left;
+			background:#f00;
+		}
+  </style>
+ </head>
+ <body>
+	<div id="d1"></div>
+	<div id="d2"></div><!--设置position:relative;之后，原来的位置还在-->
+	<div id="d3"></div>
+ </body>
+</html>

@@ -1,0 +1,4 @@
+概念：void是一个操作符!!!（typeof也是操作符）
+语法：void (express) 或则  void express
+注意点：必须存在express，若无，则报错 (即void()会报错 )
+作用：无论express是什么，都返回一个undefined。因为undefined不是保留字，所以undefined可以当做变量名，那我们去判断一个值是否是undefined的时候，有可能这个undefined就不是undefined了，有可能是一个变量名，而void能保证获取到的是一个undefined。
