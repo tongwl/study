@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>Document</title>
+ </head>
+ <body>
+	<button id="button"></button>
+	<script>
+
+	/*不懂到时候再问把，其实不难，一讲就通的玩意*/
+
+
+	/*下面先声明calc，然后在sort方法中调用的方法不好，因为calc在这里声明的时候就占用内存，它仅仅在下面的sort作为参数传递，所以没必要定义，浪费了内存*/
+		function calc(a,b){
+			return a-b;
+		}
+
+		var arr=[5,3,1,2,4];
+		arr.sort(calc);//千万不要写calc()，写了calc()就是执行这个方法
+		console.log(arr);
+
+
+	/*下面把匿名函数作为参数传递的方法比较好，节省内存*/
+		var arr=[5,3,1,2,4];
+		arr.sort(function(a,b){return a-b});//里面的匿名函数作为一个参数传递，sort方法就会用到这个函数，具体里面到底怎么用的，我下面模拟一个简单的
+		console.log(arr);
+
+	
+	/*模拟一下为什么要传递一个fun的参数过去，fun传递过去它是怎么执行的*/
+		//首先定义一个函数，需要传一个普通参数和一个函数参数过来
+		function say(cs,fun){
+			console.log(cs+fun());//因为fun是一个函数，所以我可以直接在后面带上()执行它
+		}
+		/*调用say方法,会输出hellotongwl,这里我只是简单的介绍下函数作为一个参数传过去的意义，这个函数里面的内容可能很复杂，并不会像我里面这么简单。
+
+		//比如上面的arr.sort(fun)，它的算法可能会有一点点的复杂，类似于
+			Array.prototype.sort=function(fun){
+				for(var i=0;i<this.length;i++){
+					//这里可能是一个冒泡排序或则其他的排序算法，但是到底是升序还是降序，就会用到
+					fun,因为fun返回的是一个boolean类型的(return a-b 其实就是返回true或false，如果写成return b-a就是完全相反的结果，所以这个排序还是取决于你在外面到底传进来一个什么函数),
+					它会类似调用 fun(第一个参数,第二个参数)这么执行，然后调换数组内值的位置
+				}
+			}
+
+			不管sort的方法有多少复杂，我们主要知道函数作为参数传递进去，它在里面会调用的！！！！！！！！！！！！！！！！！！！！！！！！！！！
+			同理比如说window.setInterval(function(){....},1000);在setInterval()函数内，会执行function(){....}
+		*/
+
+		say("hello",function(){return "tongwl"});
+		
+	</script>
+ </body>
+</html>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>Document</title>
+ </head>
+ <body>
+	<script>
+		//解决一个知识点，就是收获一笔财富
+		var str="tongwl";
+		console.log(str.charCodeAt(1));//方法了解
+		console.log(String.fromCharCode(111));//方法了解
+		console.log(str.charAt(2));//输出n
+		console.log(str.slice(1,2));//输出o
+		console.log(str.slice(2));//输出ngwl
+		console.log(str.slice(-2,-1));//输出w
+		console.log(str.substring(1,3));//on
+		console.log(str.substring(3));//gwl
+		console.log(str.substr(2));//ngwl
+		console.log(str.substr(2,2));//ng
+		console.log(str.substr(-2,2));//wl
+		
+		str="heheheda";
+		console.log(str.indexOf("eh"));//1
+		console.log(str.indexOf("eh",5));//-1
+		console.log(str.indexOf("eh",3));//3
+		console.log(str.lastIndexOf('he'));//4
+		console.log(str.lastIndexOf('he',3));//2
+		console.log(str.search("da"));//6
+		console.log(str.search(/da/i));//6
+		console.log(str.search("ha"));//-1
+		console.log(str.concat("123","456"));//heheheda123456
+		
+
+		str="a,b,c,d,e,f";
+		var arr=str.split(",");//获取到的是一个数组
+		console.log(arr);//["a","b","c","d","e","f"]
+		console.log(str.split(",",3));//获取到的是一个限制了长度的数组["a","b","c"]
+		console.log(str.split("haha"));//获取到的是一个字符串的数组["a,b,c,d,e,f"]
+
+		str="xiaoxie";//注意所有字符串一旦创建，不可修改！！！！
+		str.toUpperCase();//这里是形成了新的字符串，并不会对原来的str进行修改
+		console.log(str);//不会变,仍旧是"xiaoxie"
+		console.log(str.toUpperCase());//"XIAOXIE"
+
+		str="DAXIE";
+		console.log(str.toLowerCase());//"daxie"
+	</script>
+ </body>
+</html>
