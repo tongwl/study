@@ -1,5 +1,129 @@
+一.
+在linux上安转git:
+如果要在 Linux 上安装预编译好的 Git 二进制安装包，可以直接用系统提供的包管理工具。在 Fedora 上用 yum 安装：
+$ yum install git-core
 
-git reset 命令：
---soft , --mixed , --hard 会对working tree和index和HEAD进行重置：
+在 Ubuntu 这类 Debian 体系的系统上，可以用 apt-get 安装：
+$ apt-get install git
 
-git reset --mixed:此为默认方式，不带任何参数的git reset,这种方式会回退某个版本，只保留源码，会回退commit
+二.ssh-keygen
+在linux生成ssh公钥进行授权,SSH 公钥默认储存在账户的主目录下的 ~/.ssh 目录。关键是看有没有用 something 和 something.pub 来命名的一对文件，这个 something 通常就是 id_dsa 或 id_rsa。有 .pub 后缀的文件就是公钥，另一个文件则是密钥。假如没有这些文件，或者干脆连 .ssh 目录都没有，可以用 ssh-keygen 来创建。，而在 Windows 上则包含在 MSysGit 包里。
+
+
+三.git简介
+git和其他版本控制系统如SVN有一个不同之处，就是暂存区(stage)的概念.
+名词解释：
+工作区：就是我在电脑上能看到的目录，比如我的learngit文件夹就是一个工作区；
+版本库：工作区有一个隐藏目录.git，这个不算工作区，而是Git的版本库。Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。
+前面讲了我们把文件往Git版本库里添加的时候，是分两步执行的：
+第一步是用git add把文件添加进去，实际上就是把文件修改添加到暂存区；
+第二步是用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支。
+
+
+
+（1）在window系统中，用git bash可以打开git界面；(左下角点开window菜单，输入git bash)
+
+（2）git init
+	初始化一个Git仓库，使用git init命令。
+
+（3）git add <file>
+     git commit -m "message"
+	添加文件到Git仓库，分两步：
+	第一步，使用命令git add <file>，注意，可反复多次使用，添加多个文件；
+	第二步，使用命令git commit，完成。
+（4） git status
+	git status命令可以让我们时刻掌握仓库当前的状态
+（5）git diff (difference)
+	git diff HEAD -- readme.txt  //对比版本库和工作区的readme.txt的区别
+	用git diff命令查看修改的内容有哪些
+（6）git log
+     git log --pretty=oneline （一行显示log内容）	
+	git log命令显示从最近到最远的提交日志
+
+（7）首先，Git必须知道当前版本是哪个版本，在Git中，用HEAD表示当前版本，也就是最新的提交3628164...882e1e0（注意我的提交ID和你的肯定不一样），上一个版本就是HEAD^，上上一个版本就是HEAD^^，当然往上100个版本写100个^比较容易数不过来，所以写成HEAD~100。
+
+（8）git reset --hard HEAD^ 表示回退到上一个版本
+
+（9）当回退到上一个版本时，原来的最新版本就没了(通过git log查看)，只要记住原来的commit的id,就可以寻找回来：git reset --hard eeed81f(版本号没必要写全，前几位就可以了，Git会自动去找。当然也不能只写前一两位，因为Git可能会找到多个版本号，就无法确定是哪一个了。)
+
+（10）git reflog
+	当回退了某个版本，想恢复到原来的版本，commit id忘记了怎么办？Git提供了一个命令git reflog用来记录你的每一次命令。
+	
+（11）git checkout -- <filename>
+	例子：git checkout -- readme.txt ，意思就是把readme.txt文件在工作区的修改全部撤销，这里有两种情况：
+	一种是readme.txt自修改后还没有被放到暂存区，现在，撤销修改就回到和版本库一模一样的状态；（当然如果知道哪里修改了，直接在文件中修改恢复到原来的内容也可以）
+	一种是readme.txt已经添加到暂存区后，又作了修改，现在，撤销修改就回到添加到暂存区后的状态。
+
+（12）git reset HEAD <filename>
+	假设已经git add到缓存区了，在commit之前，发现了问题，可以用 git reset HEAD <filename>把缓存区的修改撤销掉，撤销掉缓存区之后，就应该丢弃工作区的修改了：
+	git checkout -- <filename>
+
+（13）git checkout -- <filename>
+	git checkout其实是用版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以“一键还原”。例子：
+	当我新添加了一个test.txt后，用git add test.txt命令添加到缓存区，当我不小心把test.txt从工作区删掉的时候，可以通过git checkout -- test.txt从缓存区还原文件到工作		区。当然如果真的要删除文件，可以用git rm <filename>将缓存区的文件也删除掉。
+（14）git rm <filename>
+	删除文件
+
+（15）发布项目到gitlab：
+	要关联一个远程库，使用命令git remote add origin git@server-name:path/repo-name.git；
+	关联后，使用命令git push -u origin master第一次推送master分支的所有内容；
+	此后，每次本地提交后，只要有必要，就可以使用命令git push origin master推送最新修改；
+
+（16）ssh生成的地址在C:\Users\tongwl\.ssh文件夹下
+
+（17）git checkout -b dev 创建并切换到dev分支，相当于
+      git branch dev   //创建dev分支
+      git checkout dev //切换到dev分支
+
+（18） git branch //查看所有的分支，*所在的表示当前分支
+	
+ (19) git branch <name> //创建分支
+（20）git checkout <name> //切换分支
+（21）git checkout -b <name> //创建+切换分支
+（22）git merge <name>  //创建分支到当前分支
+（23）git branch -d <name> //删除分支
+ (24) git branch -D <name> //强制删除分支
+（25）git reset --mixed //它回退到某个版本，只保留源码，回退commit和缓存区内容
+      git reset --soft //只回退了commit的信息，不会回退缓存区内容，如果还要提交，直接commit即可
+      git reset --hard //彻底回退某个版本，本地的源码也会变成上一个版本内容
+      git reset --hard HEAD
+	HEAD 最近一个提交
+    	HEAD^ 上一次提交
+    	HEAD^^ 上一次的 上一次的提交（倒数第三次）
+    	HEAD^^^ 倒数第四次的提交
+    	HEAD~0 最近一个提交
+    	HEAD~1 上一次提交
+    	HEAD^2 上一次的 上一次的提交（倒数第三次）
+    	HEAD^3 倒数 第四次的 提交
+	HEAD^100 倒数第101次的提交
+	
+（26）
+      git add .    //提交当面目录下所有的文件
+      git add --all  //提交所有的文件(all!!!)
+      git commit -am "msg"  //相当于 git add --all git comit -m "msg"两步
+      git commit --amend   //修改commit信息
+
+（27）git stash //储藏当前工作现场
+      git stash list //查看储藏情况
+      git stash apply //恢复当前现场，但是不删除stash内容
+      git stash drop //删除stash内容
+      git stash pop  //相当于 git stash apply + git stash drop 
+      当开发dev分支开发到一半时，此时需要master的一个bug，那么可以这么做：
+      在dev分支下，输入 git stash //储藏当前工作现场
+      切换到master，分支进行修改bug；
+      修改完之后，想要重新进行dev开发，首先切换到dev分支：git checkout dev
+      然后 git stash drop //恢复现场并删除储藏	
+
+（28）get remote //查看远程库信息
+      get remote -v  //获取远程库的git下载地址
+
+（29）git push origin master //推送到远程master分支
+      git push origin dev //推送到	远程dev分支	
+
+（30）	多人协作的工作模式通常是这样：
+	首先，可以试图用git push origin branch-name推送自己的修改；
+	如果推送失败，则因为远程分支比你的本地更新，需要先用git pull试图合并；
+	如果合并有冲突，则解决冲突，并在本地提交；
+	没有冲突或者解决掉冲突后，再用git push origin branch-name推送就能成功！
+	如果git pull提示“no tracking information”，则说明本地分支和远程分支的链接关系没有创建，用命令git branch --set-upstream branch-		name origin/branch-name。
+	这就是多人协作的工作模式，一旦熟悉了，就非常简单。
