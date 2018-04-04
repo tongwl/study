@@ -1,0 +1,2 @@
+ng-click里面除了写函数，还可以这么用：
+ng-click="propertyName=null;reverse=false;"   //propertyName和reverse分别在$scope中存在。

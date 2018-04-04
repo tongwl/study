@@ -1,0 +1,10 @@
+1. ng-show/ng-hide 与 ng-if的区别？
+我们都知道ng-show/ng-hide实际上是通过display来进行隐藏和显示的。而ng-if实际上控制dom节点的增删除来实现的。因此如果我们是根据不同的条件来进行dom节点的加载的话，那么ng-if的性能好过ng-show.
+
+2.解释下什么是$rootScrope以及和$scope的区别？
+ $rootScope针对全局的作用域生效;
+ $scope只针对当前的controller作用域生效
+
+
+3. 表达式 {{yourModel}}是如何工作的？
+它依赖于 $interpolation服务，在初始化页面html后，它会找到这些表达式，并且进行标记，于是每遇见一个{{}}，则会设置一个$watch。而$interpolation会返回一个带有上下文参数的函数，最后该函数执行，则算是表达式$parse到那个作用域上。
