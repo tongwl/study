@@ -1,0 +1,572 @@
+1.$digest()和$apply()区别
+
+1). $digest()没有参数，$apply可以有一个回调函数作为参数
+2). $digest()只会触发当前scope域和子scope域，但是$apply会触发作用域树上的所有监控
+
+
+2.vue用的是基于setter，getter的观测机制，angularjs用的是脏检查机制，angularjs的双向数据绑定原理：
+所谓的双向数据绑定，无非是从界面的操作能实时反映到数据，数据的变更能实时展现到界面。
+
+脏检查机制是实现双向数据绑定的重要基础。
+
+双向数据绑定的几个重要的函数：
+$apply() / $digest()
+$watch() 
+
+
+当写下{{aModel}},ng-bind,ng-model的时候，angularjs会在scope模型上设置一个对应的watcher，这个watcher的监听函数用来在数据变化的时候更新view。
+
+假设我在一个ng-click函数中修改了$scope的数据，此时angularjs就会自动调用$digest()来触发一轮$digest循环，$digest会触发所有的watcher进行检查，检查当前model值是否有所修改。如果不同，那么对应的回调函数就会被执行，回调函数内就会操作dom，更新view的内容。
+
+ng只在以下情况才会进入到$digest循环中：
+DOM事件 (ng-click)
+xhr响应事件($http)
+浏览器Location变更事件($location)
+Timer事件($timeout，$interval)
+执行$digest()或$apply()
+
+上述事件发生->$digest()循环->触发每个watcher->watcher检查scope中的当前model值和上一次计算得到的model值是否不同->如果不同，那么$watch()对应的回调函数会被执行->调用该函数的结果，就是view中的表达式内容(译注：诸如{{ aModel }})会被更新
+
+。
+
+
+
+
+
+以下解释非常好：
+
+当你写下表达式如{{ aModel }}时，AngularJS在幕后会为你在scope模型上设置一个watcher，它用来在数据发生变化的时候更新view。这里的watcher和你会在AngularJS中设置的watcher是一样的：
+
+$scope.$watch('aModel', function(newValue, oldValue) {  
+  //update the DOM with newValue  
+}); 
+传入到$watch()中的第二个参数是一个回调函数，该函数在aModel的值发生变化的时候会被调用。当aModel发生变化的时候，这个回调函数会被调用来更新view这一点不难理解，但是，还存在一个很重要的问题！AngularJS是如何知道什么时候要调用这个回调函数呢？换句话说，AngularJS是如何知晓aModel发生了变化，才调用了对应的回调函数呢？它会周期性的运行一个函数来检查scope模型中的数据是否发生了变化吗？好吧，这就是$digest循环的用武之地了。
+
+在$digest循环中，watchers会被触发。当一个watcher被触发时，AngularJS会检测scope模型，如何它发生了变化那么关联到该watcher的回调函数就会被调用。那么，下一个问题就是$digest循环是在什么时候以各种方式开始的？
+
+在调用了$scope.$digest()后，$digest循环就开始了。假设你在一个ng-click指令对应的handler函数中更改了scope中的一条数据，此时AngularJS会自动地通过调用$digest()来触发一轮$digest循环。当$digest循环开始后，它会触发每个watcher。这些watchers会检查scope中的当前model值是否和上一次计算得到的model值不同。如果不同，那么对应的回调函数会被执行。调用该函数的结果，就是view中的表达式内容(译注：诸如{{ aModel }})会被更新。除了ng-click指令，还有一些其它的built-in指令以及服务来让你更改models(比如ng-model，$timeout等)和自动触发一次$digest循环。
+
+目前为止还不错！但是，有一个小问题。在上面的例子中，AngularJS并不直接调用$digest()，而是调用$scope.$apply()，后者会调用$rootScope.$digest()。因此，一轮$digest循环在$rootScope开始，随后会访问到所有的children scope中的watchers。
+
+Note: $scope.$apply()会自动地调用$rootScope.$digest()。$apply()方法有两种形式。第一种会接受一个function作为参数，执行该function并且触发一轮$digest循环。第二种会不接受任何参数，只是触发一轮$digest循环。我们马上会看到为什么第一种形式更好。
+
+
+
+
+
+
+
+
+什么时候手动调用$apply()方法？
+如果你在AngularJS上下文之外的任何地方修改了model，那么你就需要通过手动调用$apply()来通知AngularJS。
+
+
+
+
+$digest循环会运行多少次？
+$digest循环不会只运行一次。在当前的一次循环结束后，它会再执行一次循环用来检查是否有models发生了变化。这就是脏检查(Dirty Checking)，它用来处理在listener函数被执行时可能引起的model变化。因此，$digest循环会持续运行直到model不再发生变化，或者$digest循环的次数达到了10次。因此，尽可能地不要在listener函数中修改model。
+
+Note: $digest循环最少也会运行两次，即使在listener函数中并没有改变任何model。正如上面讨论的那样，它会多运行一次来确保models没有变化。
+
+
+
+
+
+
+
+2.angular的3种启动方式
+
+(1)自动启动
+Angular会自动找到ng-app，将它作为启动点，自动启动。
+
+(2)手动启动
+注意点：手动启动的时候必须等dom文档初始化完成
+
+语法：
+angular.bootstrap(element, [modules], [config]);
+
+element(必需)。(就是ng-app所在的元素) 要启动angular的根节点，一般为document，也可以是其他的的html的dom。
+modules(数组，可选)。依赖的模块。
+conifg(object,可选)。配置项，目前只有strictDi一个可配置项，默认为false,是否开启辅助debug。
+
+
+
+例子：
+    <div ng-controller="myCtrl">
+        {{text2}}
+    </div>
+
+    <script>
+        var app=angular.module("myModule",[]);
+        app.controller("myCtrl",["$scope",function($scope){
+            $scope.text2="tongwl";
+        }]);
+
+
+        angular.element(document).ready(function(){
+            console.log(1);
+            angular.bootstrap(document,["myModule"]);
+        });
+    </script>
+
+
+
+(3)多个ng-app，在angular中，ng-app是无法嵌套使用的，在不嵌套的情况下有多个ng-app,它默认只是启动第一个ng-app,后面的需要手动启动！
+例子：
+    <div ng-app="app1">
+        <div ng-controller="ctrl">
+            {{username}}
+        </div>
+    </div>
+
+    <div ng-app="app2">
+        <div ng-controller="ctrl">
+            {{username}}
+        </div>
+    </div>
+
+    <script>
+        var app=angular.module("app1",[]);
+        app.controller("ctrl",["$scope",function($scope){
+            $scope.username="tongwl";
+        }]);
+
+        var app2=angular.module("app2",[]);
+        app2.controller("ctrl",["$scope",function($scope){
+            $scope.username="szz";
+        }]);
+
+        angular.element(document).ready(function(){
+            angular.bootstrap(document,["app2"]);
+        });
+
+    </script>
+
+
+
+3.如果加载了jquery,那么angualr会使用jquery,否则会使用自己的封装的jqLite，源码：
+if (jQuery && jQuery.fn.on) {
+    jqLite = jQuery;
+    extend(jQuery.fn, {
+      scope: JQLitePrototype.scope,
+      isolateScope: JQLitePrototype.isolateScope,
+      controller: JQLitePrototype.controller,
+      injector: JQLitePrototype.injector,
+      inheritedData: JQLitePrototype.inheritedData
+    });
+
+
+4.ng的指令格式可以是
+ng-controller
+data-ng-controller
+x-ng-controller
+ng:controller
+
+
+
+5.filter
+
+(1). uppercase(大写)
+(2). lowercase(小写)
+(3). currency(货币处理) 默认是美元符号，
+  {{currency_expression|currency:symbol:fractionSize}}
+  
+  //symbol
+  //fractionSize表示保留的小数位数 
+
+  例子：
+    {{num | currency : '￥':2}}
+(4). number(格式化数字)
+  {{number_expression|number:fractionSize}}
+  例子：
+    {{cs | number : 3}}
+
+ (5).date
+{{date_expression|date:format:timezone}}
+$filter(“date”)(date_value,format,timezone);
+Example:
+$filter(“date”)(new Date(),”yyyy-MM-dd”)
+
+ (6)limitTo
+{{limitTo_expression|limitTo:length:begin}} //beigin好像没什么用!!!length可以为负值，表示从后面开始截取。
+$filter(‘limitTo’)(123456789,-5) //56789
+
+
+  (7)json（格式化json对象）
+ {{json_expression|json:spacing}} //spacing默认是2，表示空格个数
+$filter(‘json’)(object,spacing) //数组也是object
+Example:
+$filter(“json”)({name:”tongwl”},4)
+
+   (8) orderBy 
+ {{orderrBy_expression|orderBy:expression:reverse:comparator}}
+  $filter(‘orderBy’)(collection,expression,reverse,comparator)
+
+  orderBy过滤器可以将一个数组中的元素进行排序，接收一个参数来指定排序规则，参数可以是一个字符串，表示以该属性名称进行排序。可以是 一个函数，定义排序属性。还可以是一个数组，表示依次按数组中的属性值进行排序（若按第一项比较的值相等，再按第二项比较），还是拿上面的孩子数组举例：
+
+<div>{{ childrenArray | orderBy : 'age' }}</div> //按age属性值进行排序，若是-age，则倒序
+<div>{{ childrenArray | orderBy : orderFunc }}</div> //按照函数的返回值进行排序
+<div>{{ childrenArray | orderBy : ['age','name'] }}</div> //如果age相同，按照name进行排序
+
+
+
+
+
+6.指令
+app.directive("childDirective",function(){
+            return {
+                restrict:"EACM",
+                template:"<h1>hello xpy0928</h1>",
+                replace:true,
+                priority:0,
+                terminal:false,
+                transclude:false,
+                link:function(scope,ele,attrs){
+                    console.log(2);
+                    ele.replaceWith("<span>"+ele.text()+"</span>");
+                }
+            };
+        });
+
+参数：
+restrict:"ECAM",
+template:"<h1>hello xpy0928</h1>",
+templateUrl:"/test.html",
+	
+	app.run(["$templateCache",function($templateCache){
+            $templateCache.put("/test.html","<span>tongwl</span>");
+        }]);
+
+
+	<script type="text/ng-template" id="/test.html">
+    	    <span>test</span>
+	</script>
+
+
+replace:false, //默认false
+priority:0, 
+terminal:false,
+transclude:false,
+controller:function($scope){ //在编译完成前执行
+
+},
+
+require:"someCtrl", //比如ngModel
+link:function(scope,ele,attrs，someCtrl){ //在编译完成后执行，someCtrl是依赖的ctrl，和require:"someCtrl"配合使用
+
+}
+
+require有一定的规则：
+require的controller不能是任意的controller，它有以下规则：
+
+directiveName  (没有前缀)如果没有前缀，指令将会在自身所提供的控制器中进行查找，如果没有找到任何控制器就抛出一个错误。
+?directiveName 如果在当前指令中没有找到所需要的控制器，会将null作为传给link函数的第四个参数。
+^directiveName 如果添加了^前缀，指令会在上游的指令链中查找require参数所指定的控制器。
+?^directiveName 将前面两个选项的行为组合起来，我们可选择地加载需要的指令并在父指令链中进行查找。
+
+link函数可以将指令互相隔离开来，而controller则定义可复用的行为。
+编译之前执行控制器（controller），编译之后执行链接（link）。
+
+controller定义的可复用行为用this.来定义，例子：
+
+<span sibling-one sibling-two></span>
+<script>
+    var app=angular.module("app",[]);
+
+    app.directive("siblingOne",function(){
+        return {
+            restrict:"EACM",
+            controller:function($scope){
+                $scope.username="tongwl";
+                this.getUsername=function(){
+                    return $scope.username;
+                }
+            }
+        };
+    });
+
+    app.directive("siblingTwo",function(){
+        return {
+            restrict:"EACM",
+            template:"<span>{{yonghuming}}</span>",
+            replace:false,
+            priority:0,
+            terminal:false,
+            require:"?^siblingOne",
+            link:function(scope,ele,attrs,ctrl){
+                scope.yonghuming=ctrl.getUsername();
+            }
+        };
+    });
+</script>
+
+
+compile指令和link指令不共存，compile指令内的post就是link指令，例子：
+app.directive("test",function(){
+        return {
+            restrict:"ECAM",
+            compile:function(elem,attrs){
+                console.log("compile");  //1st
+                return {
+                    pre:function(scope,elem,attr){
+                        console.log("pre");  //3th
+                    },
+                    post:function(scope,elem,attr){
+                        console.log("post"); //4th
+                    }
+                };
+            },
+            controller:function($scope){
+              console.log("ctrl");  //2nd
+            }
+        };
+    });
+
+7.angularjs生命周期：
+
+一、启动阶段
+        大家应该都知道，当浏览器加载一个HTML页面时，它会将HMTL页面先解析成DOM树，然后逐个加载DOM树中的每一个元素节点。我们可以把AngularJS当做一个类似jQuery的js库，我们通过<script>标签引入到HTML中，那么此时Angular就作为一个普通的DOM节点等待浏览器解析，当浏览器解析到这个节点时，发现它是一个js文件，那么浏览器会停止解析剩余的DOM节点，开始执行这个js（即angular.js），同时Angular会设置一个事件监听器来监听浏览器的DOMContentLoaded事件。当Angular监听到这个事件时，就会启动Angular应用。
+
+ 二、初始化阶段
+        Angular开始启动后，它会查找ng-app指令，然后初始化一系列必要的组件（即$injector、$compile服务以及$rootScope），接着重新开始解析DOM树。
+
+
+ 三、编译、链接
+        $compile服务通过遍历DOM树的方式查找有声明指令的DOM元素。当碰到带有一个或多个指令的DOM元素时，它会排序这些指令（基于指令的priority优先级），然后使用$injector服务查找和收集指令的compile函数并执行它。
+        每个节点的编译方法运行之后，$compile服务就会调用链接函数。这个链接函数为绑定了封闭作用域的指令设置监控。这一行为会创建实时视图。
+        最后，在$compile服务完成后，AngularJS运行时就准备好了。
+
+
+四、运行阶段
+        Angular提供了自己的事件循环。指令自身会注册事件监听器，因此当事件被触发时，指令函数就会运行在AngularJS的$digest循环中。$digest循环会等待$watch表达式列表，当检测到模型变化后，就会调用$watch函数，然后再次查看$watch列表以确保没有模型被改变。
+        一旦$digest循环稳定下来，并且检测到没有潜在的变化了，执行过程就会离开Angular上下文并且通常会回到浏览器中，DOM将会被渲染到这里。
+
+
+8.angular方法
+
+9.angular promise
+
+重要服务：$q
+
+$q有以下方法：
+$q.defer()  //创建并返回一个deferred对象
+$q.all(promise对象数组)  //返回的是一个promise对象！！！
+$q.when(value) //将value转换为promise对象
+
+例子：var promise = $q.when(1); // empty promise
+
+$q.resolve(value) //简化说明配置该deferred对象的promise的then的成功调用函数参数
+$q.reject(rejectReason) //简化说明 创建该deferred对象的promise的then的失败调用函数参数
+
+deferred对象有以下属性和方法：
+promise :产生一个promise对象
+resolve() :对应promise的success
+reject() :对应promise的error
+notify() :对应promise的notofy
+
+Promise构造函数有3个方法：
+then(successFun,errorFun,notifyFun)
+catch(exception)
+finally(callback)
+
+
+then可以连写，并获取上一个then的值，例子：
+promise.then(function(response){
+            console.log("success:"+response);
+            return "wawa"; //传递给下一个then的success
+        },function(error){
+            console.log("error:"+error);
+            return "error"; //传递给下一个then的error
+        },function(value){
+            console.log("notify:"+value);
+        }).then(function(response){  //这里的response从上一个then的success而来
+            console.log("next success:"+response);
+        }).catch(function(e){
+            console.log(e);
+        }).finally(function(value){
+            console.log("finally:"+value);
+        });
+
+例子2：
+<script>
+    var app=angular.module("app",[]);
+    app.controller("ctrl",["$scope","myService",function($scope,myService){
+        var userPromise=myService.getUser();
+        userPromise.then(function(response){
+            $scope.username=response.username;
+            $scope.password=response.password;
+        },function(error){
+            console.log(error);
+        }).catch(function(e){
+
+        }).finally(function(value){
+
+        });
+    }]);
+
+
+    app.factory("myService",["$http","$q",function($http,$q){
+        return {
+            getUser:function(){
+                var  deferred=$q.defer();
+
+                $http({
+                    method:"GET",
+                    url:"test.json"
+                }).success(function(response){
+                    deferred.resolve(response);
+                }).error(function(error){
+                    deferred.reject(error);
+                });
+
+                return deferred.promise;
+            }
+        };
+    }]);
+</script>
+
+$q.all的例子：
+	var promises=$q.all([        //返回的是一个promise对象，所以可以用.then .catch .finally方法。
+            $http({
+                "method":"GET",
+                "url":"test.json"
+            }),
+            $http({
+                "method":"GET",
+                "url":"test2.json"
+            })
+        ]);
+
+
+10.service factory privider
+
+service : 通过service方式创建自定义服务，相当于new的一个对象：var s = new myService();，只要把属性和方法添加到this上才可以在controller里调用。
+
+	例子：
+	app.service("myService",[function(){
+            this.username="tongwl";
+    	}]);
+
+factory : factory方式创建的服务，作用就是返回一个有属性有方法的对象。相当于：var f = myFactory();
+	例子：
+ 	app.factory("myFactory",[function(){
+            return {
+                username:"tongwl"
+            };
+    	}]);
+
+
+provider : 只有provider是能传.config()函数的service。
+
+只有provder是能传 .config() 函数的 service。如果想在 service 对象启用之前，先进行模块范围的配置，那就应该选择 provider。需要注意的是：在config函数里注入provider时，名字应该是：providerName+Provider. 
+使用Provider的优点就是，你可以在Provider对象传递到应用程序的其他部分之前在app.config函数中对其进行修改。 
+当你使用Provider创建一个service时，唯一的可以在你的控制器中访问的属性和方法是通过$get()函数返回内容。
+
+例子：
+<script>
+    var app=angular.module("app",[]);
+    app.config(["myProviderProvider",function(myProvider){
+        myProvider.setUrl2("test.json");
+        myProvider.setUsername2("tongwl");
+    }]);
+
+    app.provider("myProvider",function(){
+        var url=null;
+        var username=null;
+
+
+        this.setUrl2=function(_url){
+            url=_url;
+        }
+
+        this.setUsername2=function(_username){
+            username=_username;
+        }
+
+        this.$get=function($http,$q){
+            return {
+                getUser:function(){
+                    return username;
+                },
+                getDizhi:function(){
+                    var deferred=$q.defer();
+
+                    $http({
+                        method:"GET",
+                        url:url
+                    }).success(function(response){
+                        deferred.resolve(response);
+                    }).error(function(error){
+                        deferred.reject("error");
+                    });
+                    return deferred.promise;
+                }
+            };
+        }
+
+    });
+
+    app.controller("ctrl",["$scope","myProvider",function($scope,myProvider){
+        console.log(myProvider.getUser());
+        myProvider.getDizhi().then(function(response){
+            console.log(response);
+        },function(error){
+            console.log("error"+error);
+        });
+    }]);
+</script>
+
+11. ng-clock 防闪烁
+
+12.表单验证
+
+13.$stateProvider
+
+14,ocLazyLoader
+
+15.注入方式
+	数组标注 $inject属性 隐式声明依赖
+
+
+16.angularjs的几大特点：
+（1）双向数据绑定;
+（2）模板；
+
+（3）mvc mvvm：
+	angularjs并不是传统意义上的MVC，更加接近于MVVM.
+
+Model:是应用中的简单数据。一般是简单的javascript对象
+
+
+ (4)服务和依赖注入
+ (5)指令	
+
+
+
+
+
+
+
+17.
+1) 浏览器加载静态HTML文件并解析为DOM；
+
+　　2) 浏览器加载angular.js文件；
+
+　　3) angular监听DOMContentLoaded 事件，监听到时开始启动；
+
+　　4) angular寻找ng-app指令，确定作用范围；
+
+　　5) 找到app中定义的Module使用$injector服务进行依赖注入；
+
+　　6) 根据$injector服务创建$compile服务用于编译；
+
+　　7) $compile服务编译DOM中的指令、过滤器等；
+
+　　8) 使用ng-init指令，将作用域中的变量进行替换；
+
+　　9) 最后生成了我们在最终视图。
+
+
+
+18.动画效果
+

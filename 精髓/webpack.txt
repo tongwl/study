@@ -1,0 +1,19 @@
+webpack --watch    //开启监听模式
+webpack --devtool source-map    //断点调试：打开 Chrome 浏览器的开发者工具，就可在 Sources 栏中看到可调试的源代码了。
+
+
+
+webpack loader：
+css-loader:读取css
+style-laoder:将css内容注入到js代码中
+
+
+
+
+webpack plugin:
+1）
+extract-text-webpack-plugin :提取文本到
+
+2）
+webpack-dev-server:devServer 会启动一个 HTTP 服务器用于服务网页请求，同时会帮助启动 Webpack ，并接收 Webpack 发出的文件更变信号，通过 WebSocket 协议自动刷新网页做到实时预览。
+注意点：需要在全局安装webpack-dev-server，否则无效！！！

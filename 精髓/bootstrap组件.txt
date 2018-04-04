@@ -1,0 +1,209 @@
+.dropdown/dropup
+	.dropdown-toggle data-toggle="dropdown"
+	.dropdown-menu
+
+.btn-toolbar
+.btn-group
+.btn-group-lg .btn-group-sm .btn-group-xs
+
+
+.nav.nav-tabs (标签页)
+.nav.nav-pills (胶囊式标签页)
+
+ 
+标签外观：(和.btn差不多)
+.label
+.label-primary
+.label-default
+.label-success
+.label-info
+.label-warning
+.label-danger
+
+警告：
+.alert
+.alert-success
+.alert-info
+.alert-warning
+.alert-danger
+
+
+进度条：
+.progress 
+	.progress-bar  //注意需要设置style:width来作为它的百分比 
+	//颜色：.progress-bar-success , .progress-bar-info , .progress-bar-warning , .progress-bar-danger
+	//条纹效果：.progress-bar-striped	
+
+
+
+1.象形文字：
+.glyphicon .glyphicon-align-left
+
+2.下拉菜单（需要引入js文件）
+关键字：
+.dropdown/dropup
+	.dropdown-toggle data-toggle="dropdown"
+	.dropdown-menu
+
+
+最外层：class="dropdown" 或则 class="dropup"
+按钮：<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+	  点击我
+	  <span	class="caret"></span>
+      </button>
+
+下拉列表：
+        <ul class="dropdown-menu">
+            <li><a href="#">hahaha</a></li>
+            <li><a href="#">hahaha</a></li>
+            <li><a href="#">hahaha</a></li>
+            <li><a href="#">hahaha</a></li>
+        </ul>
+
+例子：
+    <div class="dropdown">
+        <button class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
+            请点击我
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="#">121111111111111111111</a></li>
+            <li><a href="#">121111111111111111111</a></li>
+            <li><a href="#">121111111111111111111</a></li>
+        </ul>
+    </div>
+
+
+
+3.按钮组
+.btn-toolbar
+.btn-group
+.btn-group-lg .btn-group-sm .btn-group-xs
+嵌套：比如一个下拉菜单放在一个按钮组：只须把 .btn-group(这是一个下拉菜单) 放入另一个 .btn-group 中。
+
+1).连在一起的按钮： .btn-group
+    <div class="btn-group">
+        <button class="btn btn-default">内容</button>
+        <button class="btn btn-primary">内容2</button>
+        <button class="btn btn-info">内容3</button>
+        <button class="btn btn-warning">内容4</button>
+        <button class="btn btn-danger">内容5</button>
+    </div>
+
+2).按钮工具栏： .btn-toolbar
+    <div class="btn-toolbar">
+        <div class="btn-group">
+            <button class="btn btn-primary">哈哈</button>
+            <button class="btn btn-primary">哈哈</button>
+            <button class="btn btn-primary">哈哈</button>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-primary">哈哈</button>
+            <button class="btn btn-primary">哈哈</button>
+            <button class="btn btn-primary">哈哈</button>
+        </div>
+    </div>
+
+3).尺寸：.btn-group-lg .btn-group-sm .btn-group-xs
+
+
+4).嵌套：比如讲下拉菜单放在一个按钮组：只须把 .btn-group(这是一个下拉菜单) 放入另一个 .btn-group 中。
+    <div class="btn-group">
+        <button class="btn btn-primary">按钮1</button>
+        <button class="btn btn-primary">按钮2</button>
+        <div class="btn-group dropdown">
+            <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                点击我呀
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#">1111111111</a></li>
+                <li><a href="#">1111111111</a></li>
+                <li><a href="#">1111111111</a></li>
+                <li><a href="#">1111111111</a></li>
+            </ul>
+        </div>
+    </div>
+
+5).按钮垂直排列  .btn-group-vertical
+    <div class="btn-group-vertical">
+        <button class="btn btn-primary">我是按钮啊</button>
+        <button class="btn btn-primary">我是按钮啊</button>
+        <button class="btn btn-primary">我是按钮啊</button>
+        <button class="btn btn-primary">我是按钮啊</button>
+        <button class="btn btn-primary">我是按钮啊</button>
+    </div>
+
+4.导航
+基础类 .nav
+
+1)标签页
+    <ul class="nav nav-tabs">
+       <li><a href="#">内容1</a></li>
+       <li><a href="#">内容2</a></li>
+       <li><a href="#">内容3</a></li>
+    </ul>
+
+2)胶囊式标签页
+<ul class="nav nav-pills">
+  <li class="active"><a href="#">Home</a></li>
+  <li><a href="#">Profile</a></li>
+  <li><a href="#">Messages</a></li>
+</ul>
+
+5.标签外观(和text差不多)：
+.label
+.label-default
+.label-primary
+.label-success
+.label-info
+.label-warning
+    <span class="label label-default">default</span>
+    <span class="label label-primary">primary</span>
+    <span class="label label-success">success</span>
+    <span class="label label-info">info</span>
+    <span class="label label-warning">warning</span>
+    <span class="label label-danger">danger</span>
+
+6.警告框
+.alert
+.alert-success
+.alert-warning
+.alert-danger
+.alert-info
+    <div class="alert alert-success">警告框</div>
+    <div class="alert alert-warning">警告框</div>
+    <div class="alert alert-danger">警告框</div>
+    <div class="alert alert-info">警告框</div>
+
+7.进度条样式
+.progress 
+	.progress-bar 
+	//注意需要设置style:width来作为它的百分比 
+	//颜色：.progress-bar-success , .progress-bar-info , .progress-bar-warning , .progress-bar-danger
+	//条纹效果：.progress-bar-striped	
+
+	<div class="progress">
+            <div class="progress-bar" style="width: 30%">30%</div>
+        </div>
+
+	<div class="progress">
+            <div class="progress-bar progress-bar-success" style="width: 20%">20%</div>
+        </div>
+
+        <div class="progress">
+            <div class="progress-bar progress-bar-warning" style="width:30%;">30%</div>
+        </div>
+
+        <div class="progress">
+            <div class="progress-bar progress-bar-info" style="width:60%;">60%</div>
+        </div>
+
+        <div class="progress">
+            <div class="progress-bar progress-bar-danger" style="width:80%">80%</div>
+        </div>
+
+	<div class="progress">
+            <div class="progress-bar progress-bar-success progress-bar-striped" style="width: 80%">80%</div>
+        </div>

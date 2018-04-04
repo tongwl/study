@@ -1,0 +1,234 @@
+一.原生dom
+DOM:Doument Object Model
+
+
+0.
+Documen类和Element类都继承了Node对象(Node.prototype)。
+获取document的方法：window.document，document对象的nodeType是9； //HTMLDocument
+获取<html>元素的方法：document.documentElement，element对象的nodeType是1；  //HTMLHtmlElement(它的父元素是HTMLElement)
+
+window.document是HTMLElement类的一个实例(通过document.__proto__查看)，HTMLDocument继承于Document，Document再继承于Node类。
+还可以通过元素获取document:element.ownerDocument
+可以通过document获取window:document.defaultView (window对象)
+
+nodeType:
+Document:9
+Element:1
+Attr:2
+Text:3
+comment:8
+documentFragment:11
+
+
+Document.prototype：
+document.getElementById("id") 
+document.getElementsByName("name"); //在ie中也会返回匹配id的元素
+document.getElementsByTagName("元素名")
+
+Element.prototype:
+ele.getElementsByClassName("class")  //可以是多个class，用空格隔开
+ele.getElementsByTagName("元素名")
+ele.getElementsByTagNameNS(参数)
+
+从上面我们可以看到：
+document和element都有getElementsByTagName等方法，document有getElementById，但是element没有,这就是为什么
+getElementById只能是document.getElementById("id"),而getElementsByTagName可以是document.getElementsByTagName和parentDom.getElementsByTagName()
+
+由于历史原因，HTMLElement类定义了一些快捷属性sing来访问各种各样的节点，例如images是<img>的类数组集合，forms是form的集合，links是<a>(但只包含哪有有href属性的)的集合。
+document.images
+document.forms
+	1.通过forms.formId可以直接获取到form对象，例子：document.forms.form1
+	2.获取到表单对象后，可以通过form1.inputId/inputName id和name直接获取到form表单内的表单对象(不包括非表单对象)		  例子：
+		document.forms.form1.user //获取到表单form1的<input type="text" id="user">的表单元素
+document.links（只包括href=""有内容的a元素）
+
+上述3个可以通过.id继续获取元素，例子：
+document.images.img1
+document.links.a1
+document.forms.form1
+
+HTMLElement有的属性
+document.body  //<body>
+document.head  //<head>
+document.documentElement  //<html>
+
+Node对象定义了以下属性：
+parentNode:父节点  类似于Document对象是没有父节点的，为null
+childNodes:获取子节点的集合(只能获取子节点，不能遍历孙节点)，是一个动态集合，每次访问集合，都要重新查找DOM树。所以遍历的时候，先把length保存下来再遍历。
+firstChild:第一个子节点
+lastChild:最后一个子节点
+nextSibling:下一个兄弟节点
+previousSibling:上一个兄弟节点
+
+nodeType:
+9:document
+1:element
+2:attribute
+3:text
+8:comment
+11:documentFragment
+
+nodeName:元素的标签名，大写
+nodeValue:Text节点或Comment节点的内容
+
+
+
+1.遍历子节点：NodeIterator TreeWalker
+2.查找HTML元素：
+document.getElementById("id")    
+	//注意：
+		如果找不到，返回一个null
+		在低于ie8版本，id不区分大小写，而且也返回name属性的元素
+
+document.getElementsByTagName("标签名")
+parentDom.getElementsByTagName("标签名") //标签名可以是大写或则小写，查找指定parent父节点下的所有指定标签名的元素对象parentDom.getElementsByTagName("*") //把所有元素都遍历出来
+
+获取到的是一个类数组
+	返回值：
+		1).如果找不到，返回一个空集合
+		2).即使只找到一个，也返回一个类数组对象(需要[0]取出节点)
+		3).返回的是一个动态集合
+		4).html内部是不区分大小写的，所以<span>和<SPAN>一样
+
+3.按照选择器查找元素：（Document.prototype/Element.prototype的方法）
+var elem=document.querySelector("selector");
+var elem=parentDom.querySelector("selector");
+    	//注意：
+		如果没有找到匹配元素，返回null，如果找到多个匹配元素，则返回第一个匹配到的元素(深度优先)；
+		如果选择器是一个 ID，并且这个 ID 在文档中错误地使用了多次，那么返回第一个匹配该 ID 的元素。
+		如果指定的选择器不合法，则抛出 SYNTAX_ERR 异常。
+var elem=document.querySelectorAll("selector");
+var elemes=parentDom.querySelectorAll("selector");
+	//注意：
+		返回的是一个非动态集合
+
+4.
+document.body  //<body>
+document.head  //<head>
+document.documentElement  //<html>
+
+5.在oldChild前面插入一个newChild：
+parentDom.insertBefore(newChild,oldChild);
+
+6.节点树：		元素树
+parentNode		parentElement
+childNodes		children
+firstChild		firstElementChild
+lastChild		lastElementChild
+nextSibling		nextElementSibling
+previousSibling		previousElementSibling
+			childElementCount
+
+7.属性
+ HTMLElement:只能获取或设置HTML标准属性(这种方式是对象的property)
+	elem.属性名=值;
+	注意事项:
+		1.从html转换为js，采用驼峰命名法，例如tab-index => tabIndex(tabindex-->tabIndex)
+   		2.对于属于js保留字的属性，一般的规则是为属性名加前缀“html”,例如label元素的for属性变成htmlFor,class例外，变成className
+		3.表示HTML属性的值通常是字符串。但是当属性为布尔值或数值的时候，属性也是布尔值或数值，而不是字符串。		
+ Element属性方法：(这里的属性更像是html的attribute，所以获取到的attribute都是字符串)
+	elem.setAttribute("属性名",属性值); //设置属性
+	elem.getAttribute("属性名")  //获取属性
+	elem.hasAttribute("属性名")  //判断属性是否存在(比如判断有没有disabled属性，disabled的值是什么无关紧要)
+	elem.removeAttribute("属性名")  //删除属性
+
+	
+ Node类型定义了attributes属性，针对非Element对象的任何节点，该属性都为null。
+   	ele.attributes //获取到ele对象的属性集合，是一个只读属性（是一个类数组对象）
+	var attrNode=elem.attributes[i/"属性名"]; //获取到的是一个属性节点，Attr类，它的father直接就是Node类
+	attrNode.name //获取属性名
+	attrNode.value //获取属性值
+ 
+ 获取一个attrNode的另一种方法：
+   	var attrNode=elem.getAttributeNode("属性名")	
+	attrNode.name //获取属性名
+	attrNode.value //获取属性值
+
+ 通过创建一个属性节点来添加属性：
+	var attrNode=document.createAttribute("class"); //创建属性节点
+        attrNode.nodeValue="red"; //给属性赋值
+        btn.setAttributeNode(attrNode); //设置属性
+
+
+8.元素内容
+  elem.innerHTML: 获得开始标签到结束标签之间的所有HTML内容
+  elem.textContent: 仅获得开始标签到结束标签之间的文本内容,去掉子标签
+  elem.innerText：现在的firefox也支持
+  (textContent和innerText格式上还是有点区别)
+
+  表单元素的值
+  表单对象.value
+
+9.创建、插入删除节点
+document.createElement("标签名") //创建一个新元素
+document.createTextNode("文本内容"); //创建一个文本内容
+var frag=document.createDocumentFragment(); //创建一个临时节点（比如给ul添加多个li，作用就体现出来了）
+parent.appendChild(elem) //将elem追加到parent的末尾
+parent.insertBefore(_new,_old); //在parent对象中，将_new插入到_old之前
+parent.repalceChild(_new,_old);  //在parent对象中，用_new替换_old对象
+parent.removeChild(elem); //删除节点
+element.cloneNode(true/false) //深拷贝还是浅拷贝
+
+
+例子1：
+	var newP=document.createElement("p");  //创建一个p元素
+        var newContent=document.createTextNode("哈哈"); //创建一个文本节点
+        newP.appendChild(newContent);	//将文本节点添加到p元素里面
+        //newP.textContent="hahaha";
+        document.body.appendChild(newP); 
+
+例子2：
+	var frag=document.createDocumentFragment();
+        for(var i=0;i<5;i++){
+            var newLi=document.createElement("li");
+            newLi.textContent=i;
+            frag.appendChild(newLi);
+        }
+        ul.appendChild(frag);
+  
+    
+10.样式
+  内联样式:
+    获取和设置：
+      elem.style.属性名
+     强调:
+      1.style，只能获取和设置内联样式
+      2.属性名: 去横线，变驼峰
+        css: background-color
+             list-style-type
+        js: backgroundColor
+            listStyleType
+      3.属性值: 所有css属性值本应都是字符串。
+	取值时: 都要去单位，转浮点数
+        赋值时: 都要加单位
+
+    何时使用:修改样式时，好用。
+	    因为内联样式优先级最高
+                内联样式不影响其它元素
+    问题:无法获得所有应用到该元素上的样式
+    解决:获得最终应用到当前元素上的计算后的所有样式。
+     var style=getComputedStyle(elem)
+         style.属性名
+     今后，只要获取样式，都用:getComputedStyle
+    IE8: var style=elem.currentStyle;
+
+  样式表:
+    强调:牵一发而动全身——危险
+    如何修改:
+     1.获得样式表对象:
+     var sheet=document.styleSheets[i]
+     2.获得样式表对象中的CSSRule
+     var rule=sheet.cssRules[i]
+	特殊:
+        如果rule又是keyframeRule
+	还要继续rule.cssRules[i]
+     3.获得rule中的css样式属性:
+       rule.style.属性名
+	
+	
+		
+		
+  	
+
+
+  

@@ -1,0 +1,91 @@
+1.
+数组的最大可能的length是2^32 -1,数组的最大索引是2^32-2，
+    例子:
+    var index=Math.pow(2,32);
+    var arr=[];
+    arr[index]=1;
+    console.log(arr);  //length是0的数组，但是存了一个key为"4294967296",value为1的属性；
+
+    例子2：
+    var index=Math.pow(2,32);
+    var arr=[];
+    arr[index-2]=1;
+    console.log(arr);  //length是index-1的数组，存了一个index为index-2的数据；
+
+数组的实现是经过优化的，用数字索引访问的数组元素比一般的对象属性访问要快很多。
+
+
+2.数组的数据直接量的值不一定是常量，可以是任意的表达式，例子：
+var base =1024;
+var table=[base,base+1,base+2,base+3];
+
+3.数组直接量允许最后有逗号，但是后面并不会产生undefined值，和对象逗号类似。
+
+4.var a=new Array(10); //创建了一个length为10的数组，但是数组中并没有存储值，甚至数组的索引属性"0"、"1"都没有定义。
+
+5.数组相对于对象的特殊之在于：当使用小于2^32-1的非负整数作为属性名时，数组会自动维护其length的属性。所有的数组索引都是对象的属性名，但是只有0 ~ 2^32-2的整数属性名才是索引。所有的数组都是对象，可以为其创建任意名字的属性。但如果使用的属性是数组的索引，数组的特殊行为就是将根据需要更新它们的length属性值。
+
+注意：数组可以使用任何字符串(负值、非整数)作为属性名，因为数组也是对象。如果凑巧的使用了在0 ~ 2^32-2内的字符串，它
+就会转换为数字，作为数组的索引，例子：
+    var arr=[];
+    arr[-1.23]=0;  //将创建一个名为"-1.23"的属性
+    arr["1000"]=1; //这是数组的第1001个元素
+    arr[1.0000]=2;  //和arr[1]相等
+
+
+事实上，数组索引仅仅是对象属性名的一种特殊类型，这意味着js数组是没有“越界”的概念的！！！！！！！当试图查询任何对象中不存在的属性时，不会报错，只会得到undefined，类似的，数组也存在这种情况。
+
+
+6.稀疏数组：从0开始的不连续的数组。如果数组是稀疏的，length属性值大于元素的个数，创建稀疏数组例子：
+    1).var arr=new Array(5); //创建一个length为5的稀疏数组
+
+    2).var arr=[,,,,,,]; //也会形成一个稀疏数组 	
+
+    3).var arr=[];
+    arr[5]=5;//形成了一个length为6的稀疏数组
+
+    4).也可以用delete操作符形成稀疏数组
+
+
+7.var arr=[,]; 和  var arr=[undefined];是不一样的，var arr=[,];产生了一个稀疏数组，var arr=[undefined];是有一个值为undefined的元素的。
+
+
+8.在数组中，肯定找不到一个元素的索引值大于或等于它的长度。所以可以通过设置数组的长度，对数组进行截取。
+
+9.for/in遍历数组不能保证按顺序遍历，所以最好不要使用for/in遍历数组。
+
+10.数组方法：
+join()
+slice()
+concat()
+splice()
+reverse()
+sort()
+push()
+pop()
+unshift()
+shift()
+
+forEach()
+map():如果没有返回值，和forEach用法一样，但是一般需要有返回值，得到一个新的数组，例子：
+    var arr=[1,2,3,4,5,6];
+    var newArr=arr.map(function(val,idx,arr){
+        return val+=1;
+    });
+    console.log(newArr); //[2,3,4,5,6,7]
+
+every()
+some()
+filter()
+
+reduce(function(total,val,idx,arr){},initValue)
+reduceRight() 从右侧开始
+indexOf()
+lastIndexOf()
+
+Array.isArray(obj) 
+
+
+11.类数组对象 
+
+	

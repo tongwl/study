@@ -1,0 +1,27 @@
+CORS:Cross-origin resource sharing 跨域资源共享。
+CORS需要浏览器和服务器同时支持。目前，所有浏览器都支持该功能，IE浏览器不能低于IE10。
+整个CORS通信过程，都是浏览器自动完成，不需要用户参与。实现CORS通信的关键是服务器。只要服务器实现了CORS接口，就可以跨源通信。
+
+CORS背后的基本思想是使用自定义的HTTP头部允许浏览器和服务器相互了解对方，从而决定请求或响应成功与否.
+
+响应头字段：
+Access-Control-Allow-Origin:指定授权访问的域
+Access-Control-Allow-Methods：授权请求的方法（GET, POST, PUT, DELETE，OPTIONS等)
+
+请求头字段：
+具体来说，就是在头信息之中，增加一个Origin字段。
+
+
+与JSONP的比较
+CORS与JSONP的使用目的相同，但是比JSONP更强大。
+JSONP只支持GET请求，CORS支持所有类型的HTTP请求。JSONP的优势在于支持老式浏览器，以及可以向不支持CORS的网站请求数据。
+
+
+
+使用HTML5中新引进的window.postMessage方法来跨域传送数据
+
+
+
+
+XSS(cross site scripting 跨站脚本)：
+XSS是指恶意攻击者利用网站没有对用户提交数据进行转义处理或者过滤不足的缺点，进而添加一些代码，嵌入到web页面中去。使别的用户访问都会执行相应的嵌入代码。

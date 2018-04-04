@@ -1,0 +1,105 @@
+1.window.location和document.location引用的是同一个Location对象。
+window.location===document.location
+
+2.document.URL保存的是首次载入的URL静态字符串，即使后期url有更新(比如添加上#qqq)，document.URL也不会变化，但是location.href会更新。
+
+3.Location对象的属性：
+href:当前文档的完整url （encodeURIComponent()编码过的）
+（注意Location的toString方法重写过，返回的就是href，在会隐式调用toString()的情况下，可以使用location代替location.href）
+protocol //协议名，最后带冒号
+hostname //主机名
+port  //端口号
+host //主机名:端口号
+origin // 协议名(带冒号)//主机名:端口号   （注意这个属性是只读的！！！！！）
+pathname URL中部分路径(除去协议名//主机名:端口)，开头有个"/"
+search //参数，开头有个"?"
+hash //hash块，开头有个"#"
+
+
+4.Location对象的方法：
+assign(url)：窗口载入url的文档，会在history下留下痕迹，后退会回到原来的页面
+replace(url)：窗口载入(替换)url的文档，会在history覆盖原来的页面，所以后退回不到原来的页面
+object.reload(forcedReload); 刷新当前页面，该方法只有一个参数，当值为 true 时，将强制浏览器从服务器加载页面资源，当值为 false 或者未传参时，浏览器则可能从缓存中读取页面。
+
+5.使浏览器跳转到新页面的更传统的方法是直接把新的URL赋值给location属性。
+location="http://www.baidu.com";
+location="#"; //会跳转到文档的顶部
+
+Location对象的url分解属性也是可写的，对他们重写赋值会改变url的位置，并且导致浏览器载入一个新的文档(如果改变的是hash属性，则在当前文档中进行跳转)：
+location.search="?uname=tongwl";
+
+
+
+刷新当前页：
+location=location;
+location.href=location.href;
+location.search=location.search;
+location.reload(true/false);
+location.replace(location) 
+history.go(0);
+
+document.execCommand('Refresh') 
+window.navigate(location) 
+document.URL=location.href
+
+6.
+History对象
+属性：
+length  //表示浏览历史列表中的元素数量，但出于安全的因素，脚本不能访问已保存的URL。
+
+方法：
+go(index)   go(0):刷新当前页  go(1):相当于foward()  go(-1)相当于back
+forward():浏览器历史记录里前往下一页
+back():前往上一页
+
+7.Navigator对象
+Navigator对象包含浏览器厂商和版本信息等。
+
+参考属性：
+appName :web浏览器的全称。IE叫"Micrisoft Internet Explorer"  Firefox叫"Netscape"  为了兼容，其他浏览器通常也叫"Netscape"。
+
+appVersion :此属性通常以数字开始，并跟着包含浏览器厂商和版本信息的详细字符串。
+
+userAgent :此属性包含appVersion中的所有信息，并且常常也可能包含其他的细节。由于这个属性包含大部分信息，因此浏览器嗅探代码通常用它来嗅探。
+
+jquery中实现了从navigator.userAgent提取浏览器名称和版本号的方法。(jQuery.support)
+
+
+platform :在其上运行浏览器的操作系统(并且可能是硬件)的字符串。
+
+以下是一些标准化的属性以及广泛应用但未标准化的属性：
+onLine :表示浏览器当前是否连接到网络。
+
+geolocation :Geolocation对象定义用于确定用户地理位置信息的接口。
+
+cookieEnable :浏览器是否可以永久保存cookie (布尔类型)
+
+
+
+8.Screen对象
+属性：
+width :屏幕分辨率的宽
+height :屏幕分辨率的高
+availWidth :屏幕可用的最大工作区宽度(和浏览器无关，除去和屏幕分辨率有关)
+availHeight :屏幕可用的最大工作区的高度(和浏览器无关，和屏幕分辨率有关)
+
+浏览器窗口可用的区域
+document.documentElement.clientWidth
+document.documentElement.clientHeight
+
+事件event对象的属性
+event.screenX 距离屏幕分辨率最左侧的距离
+event.screenY  距离屏幕分辨率最上侧的距离
+event.clientX 距离浏览器可用区域最左侧的距离
+event.clientY 距离浏览器可用区域最上册的距离
+
+
+9.window的3个弹出框
+alert()
+prompt("请输入你要输入的内容")  //返回string类型的内容
+confirm("请确认") //返回布尔类型
+
+10.如果在HTML文档中用id属性来为元素命名，并且如果Window对象没有此名字的属性，Window对象会赋予一个属性，它的名字是id属性的值，而他们的值指向表示文档元素的HTMLElement对象。但是有一个严重警告，如果window对象已经存在此名字的属性，就不会发生。比如，id是"history"、"location"、"navagator"的元素，就不会以全局变量的形式出现，因为这些ID已经被占用了。同理自己定义的window属性也会导致id不能直接用来当做dom对象使用，可以用document.getElementById("id名称")来代替。
+
+
+11.14章 window.open()未看。

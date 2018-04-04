@@ -1,0 +1,138 @@
+1995年，同源政策由 Netscape 公司引入浏览器。目前，所有浏览器都实行这个政策。
+最初，它的含义是指，A网页设置的 Cookie，B网页不能打开，除非这两个网页"同源"。所谓"同源"指的是"三个相同"：
+协议相同
+域名相同
+端口相同
+
+http://www.example.com/dir2/other.html：同源
+http://example.com/dir/other.html：不同源（域名不同）
+http://v2.www.example.com/dir/other.html：不同源（域名不同）
+http://www.example.com:81/dir/other.html：不同源（端口不同）
+
+同源政策的目的
+同源政策的目的，是为了保证用户信息的安全，防止恶意的网站窃取数据。
+设想这样一种情况：A网站是一家银行，用户登录以后，又去浏览其他网站。如果其他网站可以读取A网站的 Cookie，会发生什么？
+很显然，如果 Cookie 包含隐私（比如存款总额），这些信息就会泄漏。更可怕的是，Cookie 往往用来保存用户的登录状态，如果用户没有退出登录，其他网站就可以冒充用户，为所欲为。因为浏览器同时还规定，提交表单不受同源政策的限制。
+由此可见，"同源政策"是必需的，否则 Cookie 可以共享，互联网就毫无安全可言了。
+
+限制范围：
+1). Cookie、localStorage、IndexDB
+2). DOM无法获得
+3). ajax
+
+
+
+cookie跨域解决：
+Cookie 是服务器写入浏览器的一小段信息，只有同源的网页才能共享。但是，两个网页一级域名相同，只是二级域名不同，浏览器允许通过设置document.domain共享 Cookie。
+举例来说，A网页是http://w1.example.com/a.html，B网页是http://w2.example.com/b.html，那么只要设置相同的document.domain，两个网页就可以共享Cookie。
+document.domain = 'example.com';
+现在，A网页通过脚本设置一个 Cookie。
+
+document.cookie = "test1=hello";
+B网页就可以读到这个 Cookie。
+
+var allCookie = document.cookie;
+
+
+另外，服务器也可以在设置Cookie的时候，指定Cookie的所属域名为一级域名，比如.example.com。
+
+Set-Cookie: key=value; domain=.example.com; path=/
+这样的话，二级域名和三级域名不用做任何设置，都可以读取这个Cookie。
+
+localStorage、IndexDB
+用html5的postMessage解决
+
+
+
+ajax跨域：
+同源政策规定，AJAX请求只能发给同源的网址，否则就报错。
+除了架设服务器代理（浏览器请求同源服务器，再由后者请求外部服务），有三种方法规避这个限制。
+JSONP
+WebSocket
+CORS
+
+JSONP：
+JSONP是服务器与客户端跨源通信的常用方法。最大特点就是简单适用，老式浏览器全部支持，服务器改造非常小。
+它的基本思想是，网页通过添加一个<script>元素，向服务器请求JSON数据，这种做法不受同源政策限制；服务器收到请求后，将数据放在一个指定名字的回调函数里传回来。
+首先，网页动态插入<script>元素，由它向跨源网址发出请求。
+
+function addScriptTag(src) {
+  var script = document.createElement('script');
+  script.setAttribute("type","text/javascript");
+  script.src = src;
+  document.body.appendChild(script);
+}
+
+window.onload = function () {
+  addScriptTag('http://example.com/ip?callback=foo');
+}
+
+function foo(data) {
+  console.log('Your public IP address is: ' + data.ip);
+};
+上面代码通过动态添加<script>元素，向服务器example.com发出请求。注意，该请求的查询字符串有一个callback参数，用来指定回调函数的名字，这对于JSONP是必需的。
+服务器收到这个请求以后，会将数据放在回调函数的参数位置返回。
+
+foo({
+  "ip": "8.8.8.8"
+});
+由于<script>元素请求的脚本，直接作为代码运行。这时，只要浏览器定义了foo函数，该函数就会立即调用。作为参数的JSON数据被视为JavaScript对象，而不是字符串，因此避免了使用JSON.parse的步骤。
+
+
+WebSocket：
+WebSocket是一种通信协议，使用ws://（非加密）和wss://（加密）作为协议前缀。该协议不实行同源政策，只要服务器支持，就可以通过它进行跨源通信。
+下面是一个例子，浏览器发出的WebSocket请求的头信息（摘自维基百科）。
+
+GET /chat HTTP/1.1
+Host: server.example.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key: x3JJHMbDL1EzLkh9GBhXDw==
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+Origin: http://example.com
+上面代码中，有一个字段是Origin，表示该请求的请求源（origin），即发自哪个域名。
+正是因为有了Origin这个字段，所以WebSocket才没有实行同源政策。因为服务器可以根据这个字段，判断是否许可本次通信。如果该域名在白名单内，服务器就会做出如下回应。
+
+HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: HSmrc0sMlYUkAGmm5OPpG2HaGWk=
+Sec-WebSocket-Protocol: chat
+
+
+CORS
+CORS是跨源资源分享（Cross-Origin Resource Sharing）的缩写。它是W3C标准，是跨源AJAX请求的根本解决方法。相比JSONP只能发GET请求，CORS允许任何类型的请求。
+
+REQUEST:
+GET /cors HTTP/1.1
+Origin: http://api.bob.com   //origin
+Host: api.alice.com
+Accept-Language: en-US
+Connection: keep-alive
+User-Agent: Mozilla/5.0...
+
+RESPONSE
+Access-Control-Allow-Origin: http://api.bob.com             //或则*
+Access-Control-Allow-Credentials: true                      //和cookie有关
+Access-Control-Expose-Headers: FooBar			    //和响应头有关
+Content-Type: text/html; charset=utf-8
+
+
+
+与JSONP的比较
+CORS与JSONP的使用目的相同，但是比JSONP更强大。
+JSONP只支持GET请求，CORS支持所有类型的HTTP请求。JSONP的优势在于支持老式浏览器，以及可以向不支持CORS的网站请求数据。
+
+
+
+
+
+
+
+
+
+request请求的Content-Type:
+application/x-www-form-urlencoded   在发送前编码所有字符（默认）,最常见的post请求
+multipart/form-data                 不对字符编码。在使用包含文件上传控件的表单时，必须使用该值。 ，传输文件时
+text/plain                          空格转换为 "+" 加号，但不对特殊字符编码。

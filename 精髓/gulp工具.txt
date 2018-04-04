@@ -1,0 +1,13 @@
+1.gulp.task(name[,deps], fn);  //gulp执行的任务
+2.gulp.src(file)  //需要处理的文件
+3.gulp.pipe(); //文件流的传输
+4.gulp.dest(path); //文件流导入到此path
+5.gulp.watch(file[,opts],taskNames); //监视file，触发taskNames任务，taskNames是数组。
+例子：
+gulp.watch("./*.*",["default","lessToCss"]);
+.pipe( isProduction ? minifyCSS() : gutil.noop() )
+
+//
+gulp-util 可以打印文字，可以产生一个空的文件流：gutil.noop();
+
+

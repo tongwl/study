@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<meta charset=utf-8 />   (<meta charset ="UTF-8">等各种都可以)
+
+<nav> <header> <aside> <article> <footer> <section>
+
+1.以往表单元素放在form里面，现在可以放在外面，加一个form="formId"即可。（input select textarea都满足）
+例子：
+<form id="testForm">
+    <input type="text" name="haha">
+    <input type="text" name="hehe">
+    <button type="button">tijiao</button>
+</form>
+<input type="text" name="he" form="testForm">
+
+1.在form表单上添加一个属性novalidate就能去除表单元素的验证。
+2.新增表单元素：type="email"，在提交表单的时候会验证输入值是否满足email的格式。
+例子：<input type="email" name="email"> 
+
+3.新增表单元素：type="url"，在提交表单的时候会验证输入值是否满足url的格式
+例子：<input type="url" name="url">
+
+4.type="number"  min max step(一次箭头加的数字) value，在提交表单的时候也会验证输入的数字是否超过min或max
+
+5.type="range" min max value step
+ 
+6.type="date" "month" "week" "time"  "datetime" "datetime-local"
+
+7.type="tel" //chrome显示无效
+
+8.type="search" //可以显示一个X用于清空已有输入
+
+9.type="color"  //颜色
+
+
+10. 数据列表，本身不可见，用于为其他输入框提供输入建议/提示：
+
+    <datalist id="menu">
+	<option>111</option>
+        <option>222</option>
+	<option>333</option>	
+    </datalist>
+
+    <input type="text" list="menu">
+
+11. <progress value="10" min="0" max="100">10%</progress>
+
+12.meter刻度尺：
+<meter value="50" min="0" max="100" low="30" high="80" optimum="50" form="formId"></meter>
+新增加的input属性：
+autofocus :自动获取焦点
+novalidate
+placeholder	
+form
+required
+max min step
+autocomplete
+multiple 允许存在多个输入，用逗号隔开
+pattern 用于表单验证
+
+
+13.output 样式效果和span一样，但是具有语义
+
+14. <time datetime="2017-11-30">情人节</time>
+time不会有任何的特殊效果；它对搜索引擎友好，搜索引擎能更智能的搜索到时间相关。
+
+15. <hgroup>对标题进行了分组，例子：
+<hgroup>
+    <h1>我是一级标题</h1>
+    <h2>我是二级标题</h2>
+</hgroup>
+<p>我是内容</p>
+
+16.<mark>标记</mark>
+
+17.
+<details>
+  <summary>摘要</summary>
+  <p>内容</p>
+</details>
+
+18.图文
+<figure>
+    <figcaption>title</figcaption>
+    <img src="test.jpg"  />
+</figure>
+
+19.<video></video>
+src、width、height、controls、autoplay、loop、muted（静音）
+poster:在播放之前显示一张海报(播放之后无法再显示)，注意取消自动播放
+preload:
+auto：自动预加载视频元数据，并缓存一定的时长
+metadata：仅预加载视频的元数据，不缓存视频内容
+none：不预加载视频元数据，不缓存视频内容
+
+
+js的事件：
+onpause：点击暂停触发此事件
+onplay：点击开始播放触发此事件
+onplaying：当视频播放进行中触发此事件（点击播放按钮时，先调用onplay，再调用onplaying）
+
+video对象：
+属性paused：只读属性，当前是否处于暂停状态
+
+方法 pause()  play()
+
+
+考虑到兼容性，还可以用source:
+<video controls>
+  <source src="foo.ogg" type="video/ogg">
+  <source src="foo.mp4" type="video/mp4">
+  Your browser does not support the <code>video</code> element.
+</video>
+当浏览器支持Ogg格式的时候， 该代码会播放Ogg文件。 如果浏览器不支持Ogg，浏览器会播放MPEG-4 file。
+
+
+
+20.strong/b    em/i
+strong加粗，em斜体，都有表示强调的作用。
+
+
+
+21.<ruby>被用来展示东亚文字注音或字符注释。 
+例子：
+<ruby>
+  漢 <rp>(</rp><rt>Kan</rt><rp>)</rp>
+  字 <rp>(</rp><rt>ji</rt><rp>)</rp>
+</ruby>
+
+<ruby>
+  明日 <rp>(</rp><rt>Ashita</rt><rp>)</rp>
+</ruby>
+
+22.<address>  (font-style:italic)
+HTML 的<address>元素可以让作者为它最近的<article>或者<body>祖先元素提供联系信息。在后一种情况下，它应用于整个文档。
+当表示一个和联系信息无关的任意的地址时，使用<p>元素而不是<address>元素。
+这个元素不能包含除了联系信息之外的任何信息，比如出版日期（这应该包含在<time>元素中）。
+通常，<address>元素可以放在当前section的<footer>元素中，如果存在的话
+
+
+23 small标签已经被重新定义了，它通常被用来表示警告、免责、提出法律限制或版权。(带有语义作用了)
+24.h5中已经废弃的元素：
+basefont、font、big、center、s、strike、tt、u、frameset、frame、noframes。
+
+25 
+.............................. 新的全局属性：
+contenteditable：文档是否可以编辑，取值可以为：true false
+（默认document.designMode为off，可以设置document.designMode为on来使整个文档可以编辑。）
+
+26.data-*  定义自定义属性，可以使用DOM对象的dataset属性去获取属性
+注意点：
+	data-my-name属性在dataset中为dataset.myName （会转换为驼峰命名法）
+	data-myClassName属性在dataset中为myclassname（如果属性是驼峰命名法，那么dataset会把它全部转换为小写）
+dom对象.dataset实际就是一个对象，例子：
+<input type="url"
+data-my-name="tongwl"
+data-my-address="龙游县"
+data-my-sex="男"
+>
+
+<script>
+    var me=document.getElementsByTagName("input")[0];
+    console.log(me.dataset);
+</script>
+
+27. tabindex (tabindex="2") 用于tab键时，页面上获取焦点的顺序。
+
+28.（参考） <embed src="">：将外部内容嵌入到文档中的指定位置。此内容由外部应用程序或其他交互式内容源（如浏览器插件）提供。
+请记住，大多数现代浏览器已经弃用并取消了对浏览器插件的支持，所以如果您希望您的网站可以在普通用户的浏览器上运行，那么依靠 <embed> 通常是不明智的。
+
+<embed>用于嵌入外部插件，但是由于目前大多数浏览器已经不对浏览器插件支持，所以该标签基本不可用了。
+
+
+
+29.拖拽事件
+源对象
+ondragstart
+ondrag
+ondragend
+
+目标对象
+ondragenter
+ondragover
+ondragleave
+ondrop (条件是必须要在ondragover事件里添加上event.preventDerfault())
+
+拖放源对象和目标对象间如何传递数据：
+1.使用全局变量(但是会污染全局对象)
+
+2.拖放时间的新属性 event.dataTransfer
+测试从 
+src.ondragstart：e.dataTransfer.setData(k,v)
+到
+target.ondrop：e.dataTransfer.getData(k)
+
+k只能是三种可能之一：text/uri-list、text/html、Files，一般取值为"text/html"。
+
+
+30.manifest缓存了解：
+扩展：html5引入了manifest文件缓存，可以实现缓存web应用，可以在没有因特网连接时进行访问。(需要对服务器进行配置，添加Manifest文件)
+应用程序缓存为引用带来三个优势：
+离线浏览 - 用户可在应用离线时使用它们
+速度 - 已缓存资源加载得更快
+减少服务器负载 - 浏览器将只从服务器下载更新过或更改过的资源。
+
+问题：就目前HTML5提供的manifest机制来讲，一个页面只能引用一个manifest页面，而且一旦发现这个manifest改变了，就会把里面所有定义的缓存文件全部重新拉取一遍，不管实际上有没有更新，控制比较不灵活。
+
+
+31.webworkor
+web worker 是运行在后台的 JavaScript，独立于其他脚本，不会影响页面的性能。您可以继续做任何愿意做的事情：点击、选取内容等等，而此时 web worker 在后台运行。
+
+检测webworker是否被支持：(Worker是一个构造函数，所以typeof为function)
+console.log(typeof(Worker));  //function 表示支持；undefined表示不支持。
+
+例子1：
+在main.html 中：
+var worker= new Worker("worker.js");  //test.js就是多线程运行的js，这个js内部不能操作dom
+worker.postMessage("hahaha");  //给worker.js发送字符串"hahaha"
+
+
+worker.js		//注意，这里的this并不是window!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+onmessage=function(event){
+    console.log(event.data);  //获取到从main.html传过来的字符串"hahaha"
+}
+
+btn.addEventListener("click",function(){
+    worker.terminate();  //停止worker.js的进行
+},false);
+
+
+
+例子2:
+在main.html中：
+var worker=new Worker("test.js");
+worker.onmessage=function(event){ //获取到从worker.js传过来的字符串
+    console.log(event.data);    
+}
+
+worker.js
+postMessage("hahahaha");  //发送字符串消息
+
+
+
+
+
+
+32.HTML5 Web Socket API
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

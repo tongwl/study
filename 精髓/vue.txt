@@ -1,0 +1,254 @@
+Vue起步
+1.首先引用js文件:
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+简介语法：
+<div id="app">{{ message }}</div>
+var app = new Vue({
+  el: '#app',
+  data: {
+    message: 'Hello Vue!'
+  }
+})
+
+<div id="app-2">
+  <span v-bind:title="message">
+    鼠标悬停几秒钟查看此处动态绑定的提示信息！
+  </span>
+</div>
+
+
+2.v-bind
+<div v-bind:title="username">html属性不能使用双大括号形式绑定，只能使用v-bind指令</div>
+
+
+v-bind的语法：v-bind:属性="预期值" 
+
+1）预期值可以直接是一个变量，例子：
+<div v-bind:title="username">
+
+2）预期值可以是一个单一 JavaScript 表达式，例子：
+<div v-bind:title="show1+' haha ' +show2">显示什么</div>
+
+3）预期值可以是一个函数，例子：
+    <span v-bind:title="sayHello()">我是内容</span>
+    
+    var app=new Vue({
+        el:"#d1",
+        data:{
+            username:"tongwl",
+            sayHello:function(){
+                return this.username+" say hello";
+            }
+        }
+    });
+
+
+v-bind支持的数组类型 v-bind:属性名
+
+(1)对象类型：返回对象的toString方法(包括数组，也是调用数组的toString方法)
+例子：
+    <span v-bind:title="tongwl">我是谁</span>    //实际解析为title="[object Object]"
+
+    var app=new Vue({
+        el:"#d1",
+        data:{
+            tongwl:{}
+        }
+    });
+
+(2).number类型/boolean类型也都是调用toString方法
+(3) null undefined没有toString方法，显示为空
+	
+
+
+3. v-if v-else-if v-else  条件
+<template>
+
+4.v-for 循环
+
+5.事件监听器 v-on:事件名
+  <button v-on:click="reverseMessage">逆转消息</button>
+var app5 = new Vue({
+  el: '#app-5',
+  data: {
+    message: 'Hello Vue.js!'
+  },
+  methods: {
+    reverseMessage: function () {
+      this.message = this.message.split('').reverse().join('')
+    }
+  }
+})
+
+修饰符
+
+修饰符 (Modifiers) 是以半角句号 . 指明的特殊后缀，用于指出一个指令应该以特殊方式绑定。例如，.prevent 修饰符告诉 v-on 指令对于触发的事件调用 event.preventDefault()：
+<form v-on:submit.prevent="onSubmit">...</form>'
+事件的修饰符有：
+.stop
+.prevent
+.capture
+.self
+.once
+
+
+
+
+6. 文本
+<span>Message: {{ msg }}</span>
+
+{{ number + 1 }}
+
+{{ ok ? 'YES' : 'NO' }}
+
+{{ message.split('').reverse().join('') }}
+
+上述这些表达式会在所属 Vue 实例的数据作用域下作为 JavaScript 被解析。有个限制就是，每个绑定都只能包含单个表达式，所以下面的例子都不会生效。
+<!-- 这是语句，不是表达式 -->
+{{ var a = 1 }}
+
+<!-- 流控制也不会生效，请使用三元表达式 -->
+{{ if (ok) { return message } }}
+
+模板表达式都被放在沙盒中，只能访问全局变量的一个白名单，如 Math 和 Date 。你不应该在模板表达式中试图访问用户定义的全局变量。
+
+
+绑定一次的文本
+<span v-once>这个将不会改变: {{ msg }}</span>
+
+
+7.原始html
+<span v-html="rawHtml"></span>	
+
+
+8.Vue.js 为 v-bind 和 v-on 这两个最常用的指令，提供了特定简写：
+v-bind 缩写
+
+<!-- 完整语法 -->
+<a v-bind:href="url">...</a>
+
+<!-- 缩写 -->
+<a :href="url">...</a>
+v-on 缩写
+
+<!-- 完整语法 -->
+<a v-on:click="doSomething">...</a>
+
+<!-- 缩写 -->
+<a @click="doSomething">...</a>
+
+
+9.计算属性
+computed
+例子：
+<div id="example">
+  <p>Original message: "{{ message }}"</p>
+  <p>Computed reversed message: "{{ reversedMessage }}"</p>
+</div>
+var vm = new Vue({
+  el: '#example',
+  data: {
+    message: 'Hello'
+  },
+  computed: {
+    // 计算属性的 getter
+    reversedMessage: function () {
+      // `this` 指向 vm 实例
+      return this.message.split('').reverse().join('')
+    }
+  }
+})
+
+一样的效果：
+<p>Reversed message: "{{ reversedMessage() }}"</p>
+// 在组件中
+methods: {
+  reversedMessage: function () {
+    return this.message.split('').reverse().join('')
+  }
+}
+
+
+注意：computed的属性要么是一个函数，要么是一个含有get/set的对象，例子：
+computed: {
+  fullName: {
+    // getter
+    get: function () {
+      return this.firstName + ' ' + this.lastName
+    },
+    // setter
+    set: function (newValue) {
+      var names = newValue.split(' ')
+      this.firstName = names[0]
+      this.lastName = names[names.length - 1]
+    }
+  }
+}
+
+
+
+10.
+v-if v-else-if v-else key
+支持template的使用。
+
+<template v-if="loginType === 'username'">
+  <label>Username</label>
+  <input placeholder="Enter your username" key="username-input">
+</template>
+<template v-else>
+  <label>Email</label>
+  <input placeholder="Enter your email address" key="email-input">
+</template>
+
+
+11.v-show，简单的切换display，不支持template的使用。
+
+v-if vs v-show
+
+v-if 是“真正”的条件渲染，因为它会确保在切换过程中条件块内的事件监听器和子组件适当地被销毁和重建。
+v-if 也是惰性的：如果在初始渲染时条件为假，则什么也不做——直到条件第一次变为真时，才会开始渲染条件块。
+相比之下，v-show 就简单得多——不管初始条件是什么，元素总是会被渲染，并且只是简单地基于 CSS 进行切换。
+一般来说，v-if 有更高的切换开销，而 v-show 有更高的初始渲染开销。因此，如果需要非常频繁地切换，则使用 v-show 较好；如果在运行时条件很少改变，则使用 v-if 较好。
+
+
+12. v-for
+	数组遍历：
+	v-for="(item,index) in items"
+	items:[
+              {message:"Foo"},
+              {message:"Bar"}
+        ]
+
+
+	对象遍历：（按照Object.keys()遍历）
+	v-for="(value,key) in student"
+	student:{
+                    name:"tongwl",
+                    age:18
+                }
+
+
+
+
+
+
+
+
+
+
+
+var data = { a: 1 }
+var vm = new Vue({
+  el: '#example',
+  data: data
+})
+
+vm.$data ===vm._data=== data // => true
+vm.$el === document.getElementById('example') // => true
+
+// $watch 是一个实例方法
+vm.$watch('a', function (newValue, oldValue) {
+  // 这个回调将在 `vm.a` 改变后调用
+})
+

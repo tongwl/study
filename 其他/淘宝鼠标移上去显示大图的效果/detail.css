@@ -1,0 +1,52 @@
+/*最外面容器*/
+#zoom_container{
+    box-sizing:border-box;
+    width:402px;/*所用的图片的宽350px+左右2px的border=352*/
+    height:402px;/*同上*/
+    border:1px solid #ccc;
+    margin:50px;/*测试用，可以删除*/
+    position:relative;/*配合子元素进行绝对定位*/
+}
+
+/*图片遮罩层的div，目的是全部覆盖img图片，为鼠标的mouseover做准备*/
+#superMask{
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    cursor: move;/*出现一个类似十字架的鼠标*/
+}
+
+/*鼠标移到图片上时出现的米黄色遮罩层*/
+#mask{
+    position: absolute;
+    width: 175px;
+    height: 175px;
+    background: #ffa;
+    opacity: 0.5;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+/*显示出来的大图片*/
+#zoom_BigImg{
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    background: #fff;
+    border: 1px solid #ddd;
+    top: 0;
+    left: 410px;
+    z-index: 999;
+    display: none;
+}
+
+#zoom_container>img{
+    display:none;
+}
+#zoom_container>img.active{
+    display:block;
+}

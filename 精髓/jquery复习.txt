@@ -1,0 +1,551 @@
+1.
+jQuery([selector,[context]])
+selector:用来查找的字符串
+context:作为待查找的 DOM 元素集、文档或 jQuery 对象。
+
+例子：
+jQuery("p",$('div'))  //在div中查找p
+$('p',document.getElementsByTagName('div')[0])
+
+2.
+jQuery(callback);  //$(document).ready()的简写。
+
+
+3.jQuery(html,[ownerDocument]) //根据提供的原始 HTML 标记字符串，动态创建由 jQuery 对象包装的 DOM 元素。同时设置一系列的属性、事件等。
+例子：
+$("<div>", {
+  "class": "test",
+  text: "Click me!",
+  click: function(){
+    $(this).toggleClass("test");
+  }
+}).appendTo("body");
+
+4.jQuery.fn.length  //jQuery 对象中元素的个数（jQuery对象是一个包含原生dom对象的类数组集合）
+例子：
+$("img").length;
+
+5.jQuery.fn.get(index) //取得其中一个匹配的元素。 index表示取得第几个匹配的元素。从0开始，返回的是DOM对象，类似的有eq(index),不过eq(index)返回的是jQuery对象。
+	jQuery.fn.get(index)等价于jQuery.fn[index]
+	
+6.
+jQuery.fn.index(childElement) //获得元素相对于选择器的 index 位置。
+
+7.jQuery.fn.data([key],[value])  
+//在元素上存放数据时,返回一个jQuery对象。
+//在元素上读取一个数据时，返回一个普通对象。(存放着数据的)
+当参数只有一个key的时候，为读取该jQuery对象对应DOM中存储的key对应的值，值得注意的是，如果浏览器支持HTML5，同样可以读取该DOM中使用 data-[key] = [value] 所存储的值。当参数为两个时，为像该jQuery对象对应的DOM中存储key-value键值对的数据。
+
+8.与jQuery.fn.data()对应的是jQuery.fn.removeData([name|list])，但是removeData并不会删除data-*属性
+
+注意点：
+data()方法能够获取到html5的data-*属性，但是通过data(key,value)设置的data-* 并不是一个html5所定义的属性，他只是一个存储在jQuery内部data对象上的一个属性，例子：
+$('#d1').data('data-my-age',18);
+console.log($('#d1').data()); // {dataMyAge: 18} ,仅仅是存储在jQuery内部data对象上
+$('#d1').removeData('data-my-age')  //可以删除它
+但是对于已经定义在html元素或则通过setAttribute()等方式定义的data-*的属性，只能被data()方法获取到，但是不能被removeData()方法删除，例子：
+<div data-user-name="tongwl" id="d1">
+console.log($('#d1').data());//{userName: "tongwl"}
+$('#d1').removeData('data-user-name'); //删除不了，因为removeData()方法只会delete jQuery内部存储着data的对象的属性
+
+
+
+9.jQuery.fn.extend(object) //扩充 jQuery 对象。
+
+10.jQuery.extend(object)  //扩充jQuery这个构造函数：
+
+11.让出$或jQuery的使用权:jQuery.noConflict(true/false)  若为true，则也让出jQuery的使用权
+源码：
+var
+	// Map over jQuery in case of overwrite
+	_jQuery = window.jQuery,
+
+	// Map over the $ in case of overwrite
+	_$ = window.$;
+
+jQuery.noConflict = function( deep ) {
+	if ( window.$ === jQuery ) {
+		window.$ = _$;
+	}
+
+	if ( deep && window.jQuery === jQuery ) {
+		window.jQuery = _jQuery;
+	}
+
+	return jQuery;
+};
+
+
+12.选择器
+基本选择器
+#id
+element
+.class
+*
+select1,select2,selectN
+
+层级选择器
+祖先 后代
+parent>child
+prev + next  //匹配所有紧接在 prev 元素后的 next 元素
+prev~siblings //匹配 prev 元素之后的所有 siblings 元素 
+
+属性选择器
+[attribute]
+[attribute=value]
+[attribute!=value]
+[attribute^=value]
+[attribute$=value]
+[attribute*=value]
+[attrSel1][attrSel2][attrSelN]
+
+伪类选择器
+:first-child
+:last-child
+:nth-child()
+:nth-last-child()1.9+
+:only-child
+
+:first-of-type 1.9+
+:last-of-type1.9+
+:nth-last-of-type()1.9+
+:nth-of-type()1.9+
+:only-of-type1.9+
+
+:empty
+
+:link
+:visited
+:hover
+:active
+:focus
+
+:target //和a链接的锚有关，匹配当前活动的目标元素。
+
+:checked
+:disabled
+:enabled
+:required
+:focus
+:read-only
+
+
+jQuery选择器：
+:hidden
+:visible  (visibility: hidden;和opacity: 0;)
+
+表单：
+:input
+:text
+:password
+:radio
+:checkbox
+:submit
+:reset
+:button
+:file
+:image
+
+
+基本选择器：
+（下面这些选择器(除了:not)都会将匹配到的元素整合成一个集合，然后从index=0开始计算）
+:first 匹配第一个元素(和:first-child的区别是:first是所有合并后的元素的第一个，:first-child是单独的父元素下的第一个)
+:last 匹配最后一个元素
+:not(selector) 去除所有与给定选择器匹配的元素
+:even 匹配所有索引值为偶数的元素，从 0 开始计数
+:odd 匹配所有索引值为奇数的元素，从 0 开始计数
+:eq(index) 匹配一个给定索引值的元素,从0开始计算
+:lt(index) 匹配所有小于给定索引值的元素，从0开始计数
+:gt(index) 匹配所有大于给定索引值的元素，从 0 开始计数
+
+内容：
+:contains(text) b匹配包含给定文本的元素
+例子：$("div:contains('John')")
+:empty 匹配所有不包含子元素或者文本的空元素
+:parent 匹配含有子元素或者文本的元素
+:has(selector) 匹配含有选择器所匹配的元素的元素
+例子：$("div:has(p)")
+
+
+13.ajax
+
+1)  $.ajax(url,[settings])
+例子：
+$.ajax({
+   type: "POST",
+   url: "some.php",
+   data: "name=John&location=Boston",
+   success: function(msg){
+     alert( "Data Saved: " + msg );
+   }
+});
+常用参数：
+url type success error data cache async
+
+2) jQuery.fn.load(url) //载入html文件代码到dom中，默认是get方法
+例子：
+$("#d1").load("partition.html");
+
+
+3) $.get(url,[data],[callback],[type])  //get请求
+例子：
+url:待载入页面的URL地址
+data:待发送 Key/value 参数。 可以是对象，也可以是字符串
+callback:载入成功时回调函数。
+type:返回内容格式，xml, html, script, json, text, _default。
+
+例子：
+$.get('test2.php',$('#form1').serialize(),function(response){            
+	//首先返回的字符串会作为script执行
+	$('#d1').html(response);
+        },'script');
+
+4) $.post(url, [data], [callback], [type]) //post请求
+url:发送请求地址。
+data:待发送 Key/value 参数。
+callback:发送成功时回调函数。
+type:返回内容格式，xml, html, script, json, text, _default。
+
+5) jQuery.getJSON(url, [data], [callback])  //通过 HTTP GET 请求载入 JSON 数据。
+例子：
+$.getJSON("test.js", function(json){
+  alert("JSON Data: " + json.users[3].name);
+});
+
+6）jQuery.getScript(url, [callback])  //通过 HTTP GET 请求载入并执行一个 JavaScript 文件。
+例子：
+ $.getScript("haha.js",function(){
+            alert("load success");
+        });
+
+
+
+14.属性
+操作元素的属性(attribute)
+jq.attr(attr,value)		//等价于element.setAttribute(attr,value)
+jq.attr(attr)			//等价于element.getAttribute(attr)
+jq.removeAttr(attr)		//等价于element.removeAttribute(attr)
+
+对于async、autofocus、autoplay、checked、controls、defer、disabled、hidden、ismap、loop、multiple、open、readonly、required、scoped、selected这些属性，不管属性值是什么，
+通过jq.attr(attr)获取到的都是他们本身，例子：
+<input type="checkbox" id="r1" checked="haha222" wawa="waw">
+console.log($('#r1').attr('checked')); //checked
+console.log(r1.getAttribute('checked')); //haha222
+
+例子：
+$("img").attr("src"); //获取img的属性src
+$("img").attr("src","test.jpg"); //设置src的属性为"test.jpg"
+$("img").attr({ src: "test.jpg", alt: "Test Image" }); //为所有图像设置src和alt属性。
+
+
+操作对象的属性(property)
+jq.prop(name|properties|key,value|fn)
+jq.removeProp(name)  //只能用于删除prop()方法产生的属性
+例子：
+$("input[type='checkbox']").prop("checked");
+$("input[type='checkbox']").prop("disabled", false);
+$("input[type='checkbox']").prop("checked", true);
+
+操作类
+jQuery.fn.addClass(class|fn)
+jQuery.fn.removeClass([class|fn])
+toggleClass(class|fn[,sw])
+hasClass(class)
+
+例子：
+$("p").addClass("selected");
+$("p").addClass("selected1 selected2");
+$("p").removeClass(); //删除所有匹配的类
+$("p").toggleClass("selected");
+
+获取值
+html([val|fn])  //等价于element.innerHTML
+text([val|fn])  //等价于element.textContent
+val([val|fn|arr])  //等价于element.value
+
+
+
+15.css
+css(name|pro|[,val|fn]) //如果是设置，则是添加style=""属性，如果是获取，则是 window.getComputedStyle(elem).getPropertyValue("值")的方式
+
+16. offset([coordinates]) //获取匹配元素在当前视口的相对偏移。（包括滚动的高度）
+offset().left
+offset().top
+
+
+计算规则：
+return {
+	top: rect.top + win.pageYOffset - docElem.clientTop,
+	left: rect.left + win.pageXOffset - docElem.clientLeft
+}
+
+rect:elem.getBoundingClientRect(); //元素距离视口的top right bottom left的位置
+window.pageXOffset
+window.pageYOffset
+pageXOffset 和 pageYOffset 属性返回文档在窗口左上角水平和垂直方向滚动的像素。
+docElem.clientTop //相当于是border-top
+docElem.clientLeft //相当于是border-left
+
+17.position()
+获取匹配元素相对父元素的偏移。
+返回的对象包含两个整型属性：top 和 left。为精确计算结果，请在补白、边框和填充属性上使用像素单位。此方法只对可见元素有效。
+
+18.scrollTop([val])
+scrollLeft([val])
+获取匹配元素相对滚动条顶部的偏移。
+获取匹配元素相对滚动条左侧的偏移。
+
+相当于 dom.scrollTop / dom.scrollLeft
+
+19.
+//获取到的都是数字，不带px
+width()  //获取content-width
+innerWidth() //获取content-width+padding-width
+outerWidth() //获取content-width+padding-width+border-width
+outerWidth(true) //获取content-width + padding-width + border-width + margin-width
+
+
+20.文档处理
+原生dom
+parent.appendChild(childDom)
+parent.insertBefore(newDom,oldDom)
+
+jQuery方法：
+append(content|fn) //尾部添加
+appendTo(content)  //尾部添加到
+prepend(content|fn) //头部插入
+prependTo(content) //头部添加到
+
+after(content|fn) //在每个匹配的元素之后插入内容。
+before(content|fn) //在每个匹配的元素之前插入内容。
+insertAfter(content) //把所有匹配的元素插入到另一个、指定的元素元素集合的后面。
+insertBefore(content) //把所有匹配的元素插入到另一个、指定的元素元素集合的前面。
+
+
+原生dom
+dom.cloneNode(true/false)  //克隆dom
+
+jQuery方法
+clone([Even[,deepEven]])
+
+
+原生dom
+parent.replaceChild(newDom,oldDom)
+
+jQuery方法
+replaceWith(content|fn)  //newChild.replaceAll(oldChild)
+replaceAll(selector)  //oldChild.replaceWith(newChild)
+
+replaceWith(content|fn) //将所有匹配的元素替换成指定的HTML或DOM元素。
+例子：
+<body>
+    <p>1111111111</p>
+    <p>2222222222</p>
+    <script>
+        $('p').replaceWith('<b>333333</b>');
+    </script>
+</body>
+
+
+
+原生dom
+parent.removeChild(child)
+
+jQuery方法
+$('div').remove();	//删除当前选定元素
+$('div').empty();	//清空选定元素内的所有内容
+detach([expr])          //从DOM中删除所有匹配的元素。
+这个方法不会把匹配的元素从jQuery对象中删除，因而可以在将来再使用这些匹配的元素。与remove()不同的是，所有绑定的事件、附加的数据等都会保留下来。
+例子1：
+<p>Hello</p> how are <p>you?</p>
+$("p").detach();
+结果：
+how are
+
+例子2：
+<p class="hello">Hello</p> how are <p>you?</p>
+$("p").detach(".hello");
+结果：
+how are <p>you?</p>
+
+
+wrap(html|element|fn) 
+unwrap() 
+wrapAll(html|ele)
+wrapInner(htm|element|fnl)
+
+1). wrap(html|element|fn)
+把所有匹配的元素用其他元素的结构化标记包裹起来。
+例子：
+$("p").wrap("<div class='wrap'></div>"); //把所有的段落用一个新创建的div包裹起来
+
+2). unwrap() 
+这个方法将移出元素的父元素。这能快速取消 .wrap()方法的效果。匹配的元素（以及他们的同辈元素）会在DOM结构上替换他们的父元素。
+例子：
+<body>
+    <h1>
+        <span>111111</span>
+        <span>222222222</span>
+        <span>111111</span>
+    </h1>
+    <script>
+        $('span').unwrap();
+    </script>
+</body>
+
+3). wrapAll(html|ele)
+将所有匹配的元素用单个元素包裹起来
+这于 '.wrap()'<a href="http://docs.jquery.com/Manipulation/wrap" title="Manipulation/wrap"></a> 是不同的，'.wrap()'为每一个匹配的元素都包裹一次。这种包装对于在文档中插入额外的结构化标记最有用，而且它不会破坏原始文档的语义品质。这个函数的原理是检查提供的第一个元素并在它的代码结构中找到最上层的祖先元素－－这个祖先元素就是包装元素。
+
+
+4). wrapInner(htm|element|fnl)
+将每一个匹配的元素的子内容(包括文本节点)用一个HTML结构包裹起来
+例子：
+<body>
+<p>1111111111111111</p>
+<p>1111111111111111</p>
+<p>1111111111111111</p>
+<script>
+    $('p').wrapInner('<b></b>');
+</script>
+</body>
+
+
+21. 筛选
+
+原生dom
+parentNode  parentElement
+childNodes  children
+firstChild  firstElementChild
+lastChild   lastElementChild
+nextSibling nextElementSibling
+previousSibling  previousElementSibling
+
+
+jQuery方法
+1) jq.eq(index|-index) //匹配第几个，返回jQuery对象
+jq.eq(index|-index)
+//获取当前链式操作中第N个jQuery对象，返回jQuery对象，当参数大于等于0时为正向选取，比如0代表第一个，1代表第二个。当参数为负数时为反向选取，比如-1为倒数第一个，具体可以看以下示例。
+类似的有get(index),不过get(index)返回的是DOM对象。
+
+2) jq.first() //匹配第1个，返回jQuery对象
+3) jq.last() //匹配最后一个，返回jQuery对象
+4) jq.filter(expr|obj|ele|fn) //筛选出与指定表达式匹配的元素集合。
+例子：
+$("p").filter(".selected") //保留带有select类的p元素
+
+5) is(expr|obj|ele|fn) //根据选择器、DOM元素或 jQuery 对象来检测匹配元素集合，如果其中至少有一个元素符合这个给定的表达式就返回true。
+例子：
+$('#p1').is('p')
+
+6）jQuery.each(object, [callback])   object可以是数组、类数组、对象，callback只有两个参数 callback(index,value)，和原生each方法相反：Array.prototype.each(value,idx,arr)
+例子：
+$('p').each(function(index,value){
+        console.log(index);
+        console.log(value); //dom
+    });
+
+jQuery.fn.each(callback),它内部调用的就是jQuery.each方法，实现：
+	function( callback ) {
+		return jQuery.each( this, callback ); //把this传给jQuery.each方法
+	}
+
+7)jQuery.map(arr|obj,callback)   object可以是数组、类数组、对象，callback只有两个参数 callback(value,index)，和原生map方法一样：Array.prototype.map(value,idx,arr)
+
+jQuert.fn.map(callback); //返回的是一个jQuery对象组成的类数组，内部还是调用了jQuery.map方法，源码实现：
+	map: function( callback ) {
+		return this.pushStack( jQuery.map( this, function( elem, i ) {  //pushStack方法实现了将对象转换为一个jQuery对象
+			return callback.call( elem, i, elem );
+		} ) );
+	}
+
+
+8) has(expr|ele) 保留包含特定后代的元素，去掉那些不含有指定后代的元素。
+例子：
+$('div').has('p').css('color','#f00'); //给含有p元素的div添加上样式
+
+9）not(expr|ele|fn) 从匹配元素的集合中删除与指定表达式匹配的元素
+例子：$('p').not(document.getElementById('p1')).css('color','red');
+
+10) slice(start, [end])
+选取一个匹配的子集
+与原来的slice方法类似
+例子：
+$('p').slice(-1).css('color','#f00'); //最后一个p添加上样式
+
+11)
+jq.parent()				//等价于element.parentNode
+parents([expr])				//取得一个包含着所有匹配元素的祖先元素的元素集合。可以通过一个可选的表达式进行筛选。
+parentsUntil([expr|element][,filter])
+[expr][,filter]String,StringV1.4
+jq.offsetParent()  //相当于dom元素.offsetParent,但是当没有相对父元素的时候，jq.offsetParent()获取到的是html这个jQuery对象，dom元素.offsetParent获取到的是body这个dom对象。
+
+expr: 用于筛选祖先元素的表达式
+filter: 一个字符串，其中包含一个选择表达式匹配元素。
+[element][,filter]DOMElement,StringV1.6
+
+element:用于筛选祖先元素的DOM元素。
+filter: 一个字符串，其中包含一个选择表达式匹配元素。
+
+例子：
+$('li.item-a').parentsUntil('.level-1')
+    .css('background-color', 'red');
+
+jq.children([s]) 	  		//返回选定元素的直接子元素		  
+jq.find(s)    	  		        //找所有的后代元素(直接+间接)
+jq.next() 				//下一个兄弟
+jq.nextAll()				//后面所有的兄弟
+nextUntil([exp|ele][,fil])		//查找当前元素之后所有的同辈元素。可以用表达式过滤
+jq.prev()				//上一个兄弟
+jq.prevAll()				//上面所有的兄弟
+prevUntil([exp|ele][,fil]) 		//查找当前元素之前所有的同辈元素，直到遇到匹配的那个元素为止。
+
+jq.siblings()				//上面和下面所有的兄弟
+
+add(expr|ele|html|obj[,con])	//把与表达式匹配的元素添加到jQuery对象中。这个函数可以用于连接分别与两个表达式匹配的元素结果集。
+例子：
+$('p').add($('span'))
+$('p').add('span')
+
+
+andSelf() 加入先前所选的加入当前元素中
+例子：
+$("div").find("p").andSelf().addClass("border");
+
+
+contents() 查找匹配元素内部所有的子节点（包括文本节点）。如果元素是一个iframe，则查找文档内容
+
+
+
+end() 回到最近的一个"破坏性"操作之前。即，将匹配的元素列表变为前一次的状态。
+例子：
+$("p").find("span").end()  选取所有的p元素，查找并选取span子元素，然后再回过来选取p元素
+
+
+
+
+
+12. jquery Promise
+
+
+$('.service-manage .tab-content').bind('scroll',function(){//滚动事件
+            if(this.scrollTop>53){
+                if(!document.getElementById('databus-service-header-copy')){
+                    var databusServiceHeader=document.getElementById('databus-service-header');
+                    var newHeader=databusServiceHeader.cloneNode(true);
+                    newHeader.setAttribute('id','databus-service-header-copy');
+                    $(newHeader).css("position","absolute");
+                    $(newHeader).css("top","50px");
+                    $(newHeader).css("z-index",999);
+                    $(newHeader).css("background-color","rgba(155,155,155,0.5)");
+                    databusServiceHeader.parentNode.appendChild(newHeader);
+                }
+            }else{
+                $('#databus-service-header-copy').remove();
+            }
+        });
+
+accessKeyId:"spark"
+accessKeySecret:"DtDream0209"
+
+projectName:databus

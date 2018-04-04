@@ -1,0 +1,691 @@
+1.bootstrap3对移动设备友好。
+为了确保适当的绘制和触屏缩放，需要在<head>之中添加viewport元数据标签：
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+在移动设备浏览器上，通过为视口(viewport)设置meta属性为user-scalable=no 可以禁用其缩放功能。这样禁用缩放功能后，用户只能滚动屏幕，就能让你的网站看上去更像原生应用的感觉：
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+width：控制 viewport 的大小，你可以给它指定一个值，如：600，或者甚至还可以给它一个特殊的值，如：device-width，device-width为设备的宽度（单位为缩放为 100% 时的 CSS 的像素）。
+height：与 width 相对应，指定viewport 高度。
+initial-scale：初始缩放比例，也就是当页面第一次 load 的时候缩放比例。
+maximum-scale：允许用户缩放到的最大比例。
+minimum-scale：允许用户缩放到的最小比例。
+user-scalable：是否允许用户手动缩放。
+
+
+2.栅格系统
+.container固定宽度（或.container-fluid100%）
+	.row
+		.col-xs-  超小屏幕 手机  (<768px,设置xs后，所有大小下都有效)
+		.col-sm- 小屏幕  平板（>=768px）
+		.col-md-  中等屏幕 桌面显示器(>=992px)
+		.col-lg-  大屏幕  桌面显示器(>=1200px)
+
+.container-fluid 100%宽度(相当于没写)
+
+
+.container样式：
+@media (min-width: 768px)
+.container {
+    width: 750px;
+}
+
+@media (min-width: 992px)
+.container {
+    width: 970px;
+}
+
+@media (min-width: 1200px)
+.container {
+    width: 1170px;
+}
+
+.row样式：
+.row{
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.col样式：
+
+1).col-xs直接定义在css中
+
+.col-xs-12 {
+  width: 100%;
+}
+.col-xs-11 {
+  width: 91.66666667%;
+}
+.col-xs-10 {
+  width: 83.33333333%;
+}
+.col-xs-9 {
+  width: 75%;
+}
+.col-xs-8 {
+  width: 66.66666667%;
+}
+.col-xs-7 {
+  width: 58.33333333%;
+}
+.col-xs-6 {
+  width: 50%;
+}
+.col-xs-5 {
+  width: 41.66666667%;
+}
+.col-xs-4 {
+  width: 33.33333333%;
+}
+.col-xs-3 {
+  width: 25%;
+}
+.col-xs-2 {
+  width: 16.66666667%;
+}
+.col-xs-1 {
+  width: 8.33333333%;
+}
+.col-xs-pull-12 {
+  right: 100%;
+}
+.col-xs-pull-11 {
+  right: 91.66666667%;
+}
+.col-xs-pull-10 {
+  right: 83.33333333%;
+}
+.col-xs-pull-9 {
+  right: 75%;
+}
+.col-xs-pull-8 {
+  right: 66.66666667%;
+}
+.col-xs-pull-7 {
+  right: 58.33333333%;
+}
+.col-xs-pull-6 {
+  right: 50%;
+}
+.col-xs-pull-5 {
+  right: 41.66666667%;
+}
+.col-xs-pull-4 {
+  right: 33.33333333%;
+}
+.col-xs-pull-3 {
+  right: 25%;
+}
+.col-xs-pull-2 {
+  right: 16.66666667%;
+}
+.col-xs-pull-1 {
+  right: 8.33333333%;
+}
+.col-xs-pull-0 {
+  right: auto;
+}
+.col-xs-push-12 {
+  left: 100%;
+}
+.col-xs-push-11 {
+  left: 91.66666667%;
+}
+.col-xs-push-10 {
+  left: 83.33333333%;
+}
+.col-xs-push-9 {
+  left: 75%;
+}
+.col-xs-push-8 {
+  left: 66.66666667%;
+}
+.col-xs-push-7 {
+  left: 58.33333333%;
+}
+.col-xs-push-6 {
+  left: 50%;
+}
+.col-xs-push-5 {
+  left: 41.66666667%;
+}
+.col-xs-push-4 {
+  left: 33.33333333%;
+}
+.col-xs-push-3 {
+  left: 25%;
+}
+.col-xs-push-2 {
+  left: 16.66666667%;
+}
+.col-xs-push-1 {
+  left: 8.33333333%;
+}
+.col-xs-push-0 {
+  left: auto;
+}
+.col-xs-offset-12 {
+  margin-left: 100%;
+}
+.col-xs-offset-11 {
+  margin-left: 91.66666667%;
+}
+.col-xs-offset-10 {
+  margin-left: 83.33333333%;
+}
+.col-xs-offset-9 {
+  margin-left: 75%;
+}
+.col-xs-offset-8 {
+  margin-left: 66.66666667%;
+}
+.col-xs-offset-7 {
+  margin-left: 58.33333333%;
+}
+.col-xs-offset-6 {
+  margin-left: 50%;
+}
+.col-xs-offset-5 {
+  margin-left: 41.66666667%;
+}
+.col-xs-offset-4 {
+  margin-left: 33.33333333%;
+}
+.col-xs-offset-3 {
+  margin-left: 25%;
+}
+.col-xs-offset-2 {
+  margin-left: 16.66666667%;
+}
+.col-xs-offset-1 {
+  margin-left: 8.33333333%;
+}
+.col-xs-offset-0 {
+  margin-left: 0;
+}
+
+
+2）.col-sm-*
+@media(min-width:768px){
+	.col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
+    		float: left;
+  	}
+
+	.col-sm-12 {
+    		width: 100%;
+  	}
+  	.col-sm-11 {
+  	  width: 91.66666667%;
+  	}
+
+	......等
+}
+
+3) .col-md-*
+@media(min-width:992px){
+	.col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+    		float: left;
+  	}
+	.col-md-12 {
+    		width: 100%;
+  	}
+  	.col-md-11 {
+    		width: 91.66666667%;
+  	}
+	
+	......等
+}
+
+4) .col-lg-*
+@media(min-width:1200px){
+	.col-lg-12 {
+    		width: 100%;
+  	}
+  	.col-lg-11 {
+    		width: 91.66666667%;
+  	}
+	
+	......等
+}
+
+
+
+
+栅格系统：（其实也是浮动布局）
+			超小屏幕 手机 (<768px)		小屏幕 平板 (≥768px)	中等屏幕 桌面显示器 (≥992px)	大屏幕 大桌面显示器 (≥1200px)
+栅格系统行为		总是水平排列			开始是堆叠在一起的，当大于这些阈值时将变为水平排列C
+.container宽度		None （自动）			750px			970px				1170px
+类前缀			.col-xs-			.col-sm-		.col-md-			.col-lg-
+列（column）数		12
+最大列（column）宽	自动				~62px			~81px				~97px
+槽（gutter）宽		30px（每列左右均有 15px）
+可嵌套			是
+偏移（Offsets）		是
+列排序			是
+
+
+
+
+3.标题和副标题(写在h1等里面的small)
+<h1>h1. Bootstrap heading <small>Secondary text</small></h1>
+<h2>h2. Bootstrap heading <small>Secondary text</small></h2>
+<h3>h3. Bootstrap heading <small>Secondary text</small></h3>
+<h4>h4. Bootstrap heading <small>Secondary text</small></h4>
+<h5>h5. Bootstrap heading <small>Secondary text</small></h5>
+<h6>h6. Bootstrap heading <small>Secondary text</small></h6>
+
+
+4.Bootstrap将全局font-size设置为14px，line-height设置为1.428(如果没有单位，这是font-size的倍数，1.428*14=20)
+5.p的margin:0 0 10px; (只有margin-bottom有10px)
+被删除文本：<del>This line of text is meant to be treated as deleted text.</del>
+无用文本：<s>This line of text is meant to be treated as no longer accurate.</s>
+
+
+6.对齐
+class"=text-left"
+class="text-center"
+class="text-right"
+class="text-justify"
+class="text-nowrap"   white-space:nowrap;
+
+
+7.cursor:help;（问号）
+8.
+class="text-lowercase" 	    text-transform: lowercase;
+class="text-uppercase"      text-transform: uppercase;
+class="text-capitalize"     text-transform: capitalize;
+
+9.缩略语：<abbr title="attribute">attr</abbr>
+
+10.地址 <address></address>
+11. <blockquote></blockquote>
+12. 无序列表  <ul><li></li></ul>
+13. 有序列表  <ol><li></li></ol>
+14.描述 ：
+	<dl>
+  		<dt>...</dt>
+  		<dd>...</dd>
+	</dl>
+15.代码 <code></code>
+16.代码块  <pre></pre>
+17.定义键盘文本  <kbd></kbd>
+18.变量 <var></var>
+
+19.表格：
+1).为任意<table>标签添加.table类可以为其赋予基本的样式---少量的内补(padding)和水平方向的分隔线。
+<table class="table">
+
+2).给table和所有的td加上边框
+<table class="table table-bordered">
+
+3).鼠标悬停(加上背景颜色)
+<table class="table table-hover">
+
+4).状态类(给tr或则td设置都有效)
+.active   鼠标悬停在行或则单元格上时所设置的颜色
+.success  标识成功或积极的动作
+.info     标识普通的提示信息或动作
+.warning  标识警告或需要用户注意
+.danger   标识危险或潜在的带来负面影响的动作
+
+例子：
+<!-- On rows -->
+<tr class="active">...</tr>
+<tr class="success">...</tr>
+<tr class="warning">...</tr>
+<tr class="danger">...</tr>
+<tr class="info">...</tr>
+
+<!-- On cells (`td` or `th`) -->
+<tr>
+  <td class="active">...</td>
+  <td class="success">...</td>
+  <td class="warning">...</td>
+  <td class="danger">...</td>
+  <td class="info">...</td>
+</tr>
+
+
+
+20.表单
+单独的表单控件会被自动赋予一些全局样式。所有设置了.form-control类的<input>、<textarea>和<select>元素都将被默认设置宽度属性为width:100%;
+将label元素和前面提到的控件包裹在.form-group中可以获得最好的排列。
+
+关键类：form-group,form-control
+form-inline 
+form-horizontal
+	control-label 
+input-group
+	input-group-addon
+	input-group-btn
+
+
+.form-group.has-success 
+.form-group.has-error
+.form-group.has-warning
+
+.form-group.has-feedback
+.form-control-feedback
+
+.form-control-static
+
+例子：
+<form>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputFile">File input</label>
+    <input type="file" id="exampleInputFile">
+    <p class="help-block">Example block-level help text here.</p>
+  </div>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox"> Check me out
+    </label>
+  </div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+
+2).内联表单
+关键类：
+.form-inline  
+
+@media (min-width: 768px)
+.form-inline .form-group {
+    display: inline-block;
+    margin-bottom: 0;
+    vertical-align: middle;
+}
+
+.form-inline .form-control {
+    display: inline-block;
+    width: auto;
+    vertical-align: middle;
+}
+
+例子：
+    <form novalidate class="container form-inline">
+        <div class="form-group">
+            <label for="username2">用户名</label>
+            <input type="text" class="form-control" id="username2" placeholder="请输入用户名">
+        </div>
+
+        <div class="form-group">
+            <label for="password2">密码</label>
+            <input type="password" class="form-control" id="password2" placeholder="请输入密码">
+        </div>
+    </form>
+
+3).带单位的表单：
+.input-group
+.input-group-addon(包裹文字)
+.input-group-btn (包裹按钮)
+
+<form class="form-inline">
+  <div class="form-group">
+    <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+    <div class="input-group">
+      <div class="input-group-addon">$</div>
+      <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">
+      <div class="input-group-addon">.00</div>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Transfer cash</button>
+</form>
+
+4).水平排列的表单：
+.form-horizontal
+它会添加以下子元素的样式：
+.form-horizontal .form-group   //让.form-group样式和.row一样，这样就不用添加.row的class了
+{
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+//label标签的样式！！！！！！！！！！！这个比较重要。
+.form-horizontal .control-label {
+    padding-top: 7px;
+    margin-bottom: 0;
+    text-align: right;
+}
+
+例子：
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label for="username4" class="col-lg-3 control-label">用户名</label>
+            <div class="col-lg-6">
+                <input type="text" class="form-control" id="username4">
+            </div>
+        </div>
+    </form>
+
+
+5). 多选框、单选框
+.checkbox  (一行一个多选框)
+.radio  (一行一个单选框)
+
+.checkbox-inline (一行可以有多个多选框)
+.radio-inline  (一行可以有多个单选框)
+
+例子：
+    <form>
+        <div class="form-group">
+            <label class="checkbox">
+                <input type="checkbox"> 我这个复选框是独自一行的
+            </label>
+            <label class="checkbox">
+                <input type="checkbox"> 我这个复选框是独自一行的
+            </label>
+        </div>
+    </form>
+
+    <form>
+        <div class="form-group">
+            <label class="checkbox-inline">
+                <input type="checkbox"> 我这个复选框不是独自占一行的
+            </label>
+
+            <label class="checkbox-inline">
+                <input type="checkbox"> 我这个复选框不是独自占一行的
+            </label>
+        </div>
+    </form>
+
+6).下拉列表
+<select class="form-control">
+  <option>1</option>
+  <option>2</option>
+  <option>3</option>
+  <option>4</option>
+  <option>5</option>
+</select>
+
+7).
+如果需要在表单中将一行纯文本和 label 元素放置于同一行，为 <p> 元素添加 .form-control-static 类即可。
+例子：
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-lg-3">用户名</label>
+            <div class="col-lg-6">
+                <div class="form-control-static">童威立</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="email3" class="col-lg-3 control-label">邮箱</label>
+            <div class="col-lg-6">
+                <input type="email" class="form-control" id="email3" placeholder="请输入你的邮箱">
+            </div>
+        </div>
+    </form>
+
+
+8). 校验状态(success、error、warning的input的颜色)
+.has-success 
+.has-error
+.has-warning
+
+.has-success .form-control {
+    border-color: #3c763d;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+等
+
+例子：
+    <form class="form-horizontal">
+        <div class="form-group has-success">
+            <label for="username10" class="col-lg-3 control-label">用户名</label>
+            <div class="col-lg-6">
+                <input type="text" class="form-control" id="username10" placeholder="请输入用户名">
+            </div>
+        </div>
+    </form>
+
+9). 表单末尾添加额外的图标
+.has-feedback
+.form-control-feedback
+
+<div class="form-group has-success has-feedback">
+  <label class="control-label" for="inputSuccess2">Input with success</label>
+  <input type="text" class="form-control" id="inputSuccess2" aria-describedby="inputSuccess2Status">
+  <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+  <span id="inputSuccess2Status" class="sr-only">(success)</span>
+</div>
+
+10).控制input大小的类：
+.input-lg
+.input-sm
+
+
+21.按钮
+
+大小：
+.btn-lg
+.btn-md(默认)
+.btn-sm
+.btn-xs
+
+块级按钮：
+.btn-block
+
+.btn
+.btn-primary (首选项)
+.btn-default (默认样式)
+.btn-success  (成功)
+.btn-info    （一般信息）
+.btn-warning  (警告)
+.btn-danger   (危险)
+.btn-link     (链接)
+
+标签外观：(和.btn差不多)
+.label
+.label-primary
+.label-default
+.label-success
+.label-info
+.label-warning
+.label-danger
+
+
+警告：
+.alert
+.alert-success
+.alert-info
+.alert-warning
+.alert-danger
+
+
+文字颜色：
+.text-primary
+.text-muted
+.text-success
+.text-info
+.text-warning
+.text-danger
+
+背景色：
+.bg-primary
+.bg-success
+.bg-info
+.bg-warning
+.bg-danger
+
+
+22.公用辅助类
+.text-center 文本居中
+.center-block 块居中
+
+
+关闭小图标：
+<button class="close">&times;</button>
+
+向下三角符号：
+<span class="caret"></span>
+
+.caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 2px;
+    vertical-align: middle;
+    border-top: 4px dashed;
+    border-top: 4px solid \9;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+}
+
+快速浮动：
+.pull-left
+.pull-left {
+  float: left !important;
+}
+
+.pull-right
+.pull-right {
+  float: right !important;
+}
+
+清除浮动：
+.clearfix
+// Mixin itself
+.clearfix() {
+  &:before,
+  &:after {
+    content: " ";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+// Usage as a mixin
+.element {
+  .clearfix();
+}
+例子：
+<!-- Usage as a class -->
+<div class="clearfix">...</div>
+
+
+显示隐藏
+.show
+.show {
+  display: block !important;
+}
+
+.hidden
+.hidden {
+  display: none !important;
+}
+
+.invisible {
+  visibility: hidden;
+}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="detail.css"/>
+</head>
+<body>
+    <h2>求婚钻戒>belive系列</h2>
+    <!--最外面的容器-->
+    <div id="zoom_container">
+        <img src="images/11.jpg" id="first" class="active"/>
+        <img src="images/22.jpg" id="second"/>
+        <img src="images/33.jpg" id="third"/>
+        <img src="images/44.jpg" id="fourth"/>
+        <img src="images/55.jpg" id="fifth"/>
+        <!--在框中出现的小图片-->
+
+        <div id="list">
+            <a href="#first">
+                <img src="images/111.jpg" alt=""/>
+            </a>
+            <a href="#second">
+                <img src="images/222.jpg" alt=""/>
+            </a>
+            <a href="#third">
+                <img src="images/333.jpg" alt=""/>
+            </a>
+            <a href="#fourth">
+                <img src="images/444.jpg" alt=""/>
+            </a>
+            <a href="#fifth">
+                <img src="images/555.jpg" alt=""/>
+            </a>
+
+        </div>
+
+
+        <!--以下是鼠标移到框中的小图片时，出现的米黄色遮罩块-->
+        <div id="mask"></div>
+        <!--以下的div会全部覆盖在上面图片的上方，为的是代替图片触发mouseover事件，因为img的mouseover事件比较卡顿，所以用一个div遮罩层代替-->
+        <div id="superMask"></div>
+        <!--显示出来的大图片：js中给它设置背景图片作为放大效果-->
+        <div id="zoom_BigImg"></div>
+    </div>
+    <script src="js/jquery-1.11.3.js"></script>
+    <script src="js/detail.js"></script>
+</body>
+</html>

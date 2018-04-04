@@ -1,0 +1,1 @@
+11.对于type="number"，maxlength是无效的，可以用oninput="if(value.length>2) value=value.slice(0,2)"方法解决。

@@ -1,0 +1,7 @@
+1.两列布局
+
+1).左边浮动 右边设置width:calc(100% - 左边width)和margin-left
+2).左边position:absolute 右边设置width100%和margin-left
+3).左右两边都设置float:left，右边width:calc( 100% - 左边width)
+4).利用bfc:左边设置float:left，width:200px，右边设置overflow:hidden（触发bfc），(不设置width:100%!!!!,不然会换行)
+5).display:flex

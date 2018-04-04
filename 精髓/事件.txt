@@ -1,0 +1,116 @@
+1.dom元素.onclick=fun 这种方式的绑定只能绑定一个函数，不能绑定多个事件函数。
+2.事件触发时，this就是指该事件在哪个dom对象上触发的。
+3.dom元素.onclick这种方式只能绑定一个事件函数，所以可以用dom元素.onclick=null;来解除事件。
+4.还有一种将dom事件绑定在html代码里的，这种方式也只能注册一个事件函数，最后一个生效。区别就是，这样注册的事件，相当于动态调用函数(有点eval的意思)，因此不会传入event对象(需要手动传入)，同时函数里面的this指向的window，不再是触发事件的dom对象，如果需要将dom对象传入，在html代码中就应该把this传入。
+例子：
+	<button type="button" id="btn3" onclick="show3(event,this)">点击3</button>
+    	function show3(e,me){
+            console.log(e); //event对象
+            console.log(me); //dom对象
+            console.log(this); //window对象
+        }
+
+
+5.可以添加多个事件函数的方法：
+dom对象.addEventListener(事件名,回调函数,bl);
+bl:
+true 在捕获阶段就触发事件；
+false 默认值，在冒泡阶段才触发事件；
+
+dom对象.removeEventListener(事件名,回调函数,bl); //此回调函数必须和addEventListener的函数一致。
+例子：
+    var fun=function(){
+        console.log(1);
+    }
+
+    btn1.addEventListener("click",fun,false);
+    btn1.removeEventListener("click",fun);  //第二个参数必须和addEventListener是同一个函数
+
+
+IE8方法：dom对象.attachEvent("on事件名",函数);只有两个阶段，没有捕获阶段，无法修改事件信息的对象。
+
+
+6.取消冒泡：
+dom：event.stopPropagation()
+IE：e.cancelBubble=true;
+
+7.利用冒泡:
+    优化规则:如果多个同级子元素，都绑定了相同的事件处理函数。就可以仅在父元素上绑定一次即可。
+    为什么?页面中绑定的事件处理函数越多，执行效率就越低，所以要尽量减少处理函数绑定的次数。
+    如何利用冒泡: 2步:    
+     Step1: 仅将事件绑定在父元素一次
+     Step2: 在事件处理函数内，首先获得目标元素,根据目标元素的不同，执行不同的操作。
+      目标元素:最先实际出发事件的元素
+	不会随冒泡而改变
+      如何获得:
+       DOM:e.target
+       IE8:e.srcElement
+
+8.取消事件
+    取消事件的默认行为：
+	DOM:event.preventDefault();
+	IE8:event.returnValue =false
+event.preventDefault()只是取消了默认行为，并不会退出函数，如果希望取消默认事件，并退出函数，可以用：
+	event.preventDefault();
+	return;
+
+9.
+     1.相对于整个屏幕左上角:
+       var x=e.screenX   
+       var y=e.screenY
+     2.相对于文档显示器左上角:
+       var x=e.clientX||x
+       var y=e.clientY||y
+     3.相对于外层元素左上角：
+       var x=e.offsetX
+       var y=e.offsetY
+
+
+10.常用事件：
+mousedown
+mousemove
+mouseup 
+
+mouseover（不会冒泡）
+mouseout （不会冒泡）
+mouseenter (等同于mouseover，会冒泡)
+mouseleave (等同于mouseleave，会冒泡)
+wheel  鼠标滚轮事件
+
+(keydown -> keypress ->keyup)
+新的触摸事件：touchmove、gesturechange
+submit
+reset
+focus （不会冒泡）
+focusin (等同于focus，但是会冒泡)
+blur  (不会冒泡)
+focusout (等同于blur，但是不会冒泡)
+change
+click
+dblclick
+contextmenu(右键点击事件！！！！！！！)
+
+window.onload：当文档和其所有的外部资源(比如图片)都完成加载后，才触发。
+unload （离开页面时触发）
+beforeunload
+<img>元素这样的文档元素也能有load和error事件注册处理程序。
+DOMContentLoaded：当文档和其元素加载完成后，就会触发。（外部资源完全加载完毕之前）
+
+resize
+scroll
+onerror	
+
+
+11 event的属性
+clientX  :鼠标在窗口坐标的X位置
+clientY	 :鼠标在窗口坐标的Y位置
+target(srcElement)  :目标对象
+keyCode   （13是enter键，32是空格键，27是Esc键）
+
+
+
+
+
+logo_showNull  pageTitleInfo_test
+copyrightInfo_test
+logo_showNull

@@ -1,0 +1,112 @@
+参考：https://www.cnblogs.com/CafeMing/p/6252286.html
+
+在以下情况下，会触发BFC:
+1.float属性不为none的情况;
+2.position为absolute或fixed的情况;
+3.overflow的值不为visible(scroll,auto,hidden)
+4.display的值为table-cell,table-caption,inline-block,flex
+
+
+首先，针对第一点float，由于float触发元素BFC后，自身float又带有特性，如将元素包裹化了，破坏了块级元素的流体性，所以不能用来自适应布局。
+
+针对第二点position，又由于position将元素脱离文档流比较严重，因此，更加不能用来自适应布局。
+
+第四点中 display:table-cell，当你设置一个比宽度无线大时，它也不会超过它容器的宽度。
+
+普通文档流布局：
+1.非浮动元素会覆盖浮动元素的位置
+2.浮动元素是不会被父元素计算高度的
+3.margin会传递给父元素
+4.两个相邻元素上下margin会重叠
+
+bfc的特点：
+1.BFC区域不会与外部浮动元素重叠。
+2.计算BFC高度时，会将内部浮动元素的高度也计算出来。
+3.margin不会传递给父元素(父元素触发了BFC)
+4.两个相邻的元素上下margin会重叠
+5.BFC就是一个页面的独立容器，容器里面的子元素不会影响到外面的元素。反之也如此。
+
+
+例子：
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        p#p1{
+            margin:0;
+            margin-bottom:20px;
+            border:1px solid #f00;
+        }
+
+        div{
+            overflow: hidden;  //由于它的存在，让div成了一个BFC，所以它是一个独立容器，容器里面的子元素不会影响到外面的元素，margin-top就不会影响到外面的了。
+        }
+
+        div > p{
+            margin:0;
+            margin-top:20px;
+            border: 1px dashed #0f0;
+        }
+    </style>
+</head>
+<body>
+    <p id="p1">哈哈</p>
+    <div>
+        <p>呵呵</p>
+    </div>
+</body>
+</html>
+
+
+
+两列布局
+方法1：左边float,右边margin
+方法2：左边absolute，右边margin
+方法3：左边float,右边overflow:hidden;(利用overflow:hidden;将元素变成BFC，根据特性，BFC不会和浮动元素重合，当然也利用到了div的宽度默认占满父元素)
+
+两列布局左边固定，右边自适应和右边固定，左边自适应的区别：
+左边固定，右边自适应的布局需要把左侧块写在前面，右侧块写在后面，例如：
+<body>
+    <div class="left"></div>  <!-- 写在前面 -->
+    <div class="right"></div>  <!-- 写在后面 -->
+</body>
+右边固定，左边自适应的布局需要把右侧块写在前面，左侧块写在后面，例如：
+<body>
+    <div class="right"></div>
+    <div class="left"></div>
+</body>
+
+
+
+三列布局(两边固定，中间自适应)
+圣杯布局：
+<body>
+    <header>我是头部</header>
+    <section>
+        <div class="main"></div>
+        <div class="left">left内容</div>
+        <div class="right">right内容</div>
+    </section>
+    <footer>我是尾部</footer>
+</body>
+
+双飞翼布局：
+<body>
+    <header>我是头部</header>
+    <section>
+        <div class="main">
+            <div class="main-inner"></div>
+        </div>
+        <div class="left">left</div>
+        <div class="right">right</div>
+    </section>
+    <footer>我是尾部</footer>
+</body>
+
+
+
+
+
+

@@ -1,0 +1,66 @@
+Ajax参考：http://blog.csdn.net/real_bird/article/details/52632290
+
+Ajax:Asynchronous Javascript And XML  (异步的javascript和xml（xml其实只是其中一种数据格式，还有json、普通文本等其他格式）)，Ajax技术的核心是XMLHttpRequest对象。
+
+XMLHttpRequest:
+它是整个Ajax技术的灵魂。Ajax技术的核心就是异步发送请求，而XMLHttpRequest则是异步发送请求的对象。
+ie7以下的兼容性：
+new ActiveXObject("Microsoft.XMLHTTP");
+
+Ajax的工作方式：
+异步是Ajax技术的核心。对于传统的web应用，每次用户发送请求，向服务器提交或获得新数据时，浏览器都是完全丢弃当前页面，而重新加载新的页面。而原本页面中很多内容是不需要重新加载的(假设需要获取的仅仅是表格数据)，这样不仅仅会浪费服务器资源，消耗性能，而且在服务器完全响应之前，用户页面会卡住(因为js是单线程)。而异步指的是用户发送请求后，完全无需等待，不会堵塞页面的操作。
+
+整个Ajax应用的工作过程：
+1.通过XMLHttpRequest对象open send等方法服务器发送请求。
+2.监听XMLHttpRequest对象的onreadystatechange事件，获取到响应数据。
+3.用js修改dom对象。
+
+
+XMLHttpRequest的属性：
+readyState:
+0:xhr对象未初始化 (尚未调用open方法)
+1:启动  (调用open方法，但未调用send方法)
+2:发送  (调用了send方法，尚未接受到响应)
+3:接受部分响应数据
+4:接受响应数据完成
+
+status：
+200 OK
+302 所请求的页面已经临时转移至新的url。(临时移动)
+304：Not Modified：该资源在上次请求后没有任何修改。通常用于浏览器的缓存
+400：Bad Request：语义有误，当前请求无法被服务器理解或者请求参数有误。 
+403 Forbidden：服务器已经接受请求，但是拒绝执行它。 
+404 Not Found*：请求失败，请求所希望得到的资源未被在服务器上发现。（大家都懂的。。。多少人满心欢喜的打开界面结果见到了这个。。） 
+500 Internal Server Error*：内部服务器错误。一般来说，这个问题都会在服务器端的源代码出现错误时出现。 
+504 Gateway Timeout：请求超时。 
+
+statusText status的文本。
+
+responseText 获取服务器的响应文本
+
+responseXML 获取服务器响应的XML文档对象
+
+XMLHttpRequest的方法：
+open(method,url,isAsync,username,password)
+send(data)
+abort()：停止发送当前请求
+setRequestHeader(key,value) 在打开连接之后(open之后)，发送请求之前(send之前)，设置请求头
+getResponseHeader('headerLabel') 根据响应头的名字，获取对应的响应头
+getAllResponseHeaders()
+
+
+ajax的缺点：
+1.ajax不支持浏览器back按钮功能；
+2.安全问题 ajax暴露了与服务器交互的细节；
+3.对搜索引擎支持较弱；
+4.调试不容易。
+
+
+默认的request-type是text/plain,post请求需要主动将Content-Type设置为"application/x-www-form-urlencoded":
+xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+
+
+ie兼容：
+var xhr=new ActiveXObject('Microsoft.XMLHTTP');
+
+

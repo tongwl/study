@@ -1,0 +1,269 @@
+1.变量
+
+1). 属性值用 @property ,选择器名、属性名、url、@import用 @{property} 
+2). 变量有作用域(类似但不同于js的作用域)
+3). 变量值可以加引号，例子：@var:red; 或 @var:"red";
+
+例子：
+(1).
+h1{
+  @{property}:@red;    //属性名用@{property},属性值用@property
+  background-@{property}:@blue;   //属性名用@{property},属性值用@property
+  @property:color;  //声明(带值)提前
+  @red:#f00;  //声明(带值)提前
+  @blue:#00f;  //声明(带值)提前
+}
+
+解析成css如下：
+h1 {
+  color: #f00;
+  background-color: #00f;
+}
+
+
+(2).
+@{selector}{  //选择器名用 @{property}
+  color:red;
+}
+@selector:h1,h2,h3,h4,h5,h6;
+ 
+解析成css如下：
+h1, h2, h3, h4, h5, h6 {
+  color: red;
+}
+
+
+(3).
+@val:red;
+div{
+  p{
+    color:@val;
+  }
+  @val:blue;  //声明(带值)提前
+}
+
+解析成css如下：
+div p {
+  color: blue;
+}
+
+
+(4).
+@url:'../';
+div{
+  background:url("@{url}1.jpg");
+}
+
+解析成css如下：
+div {
+  background: url("../1.jpg");
+}
+
+
+
+2.继承  :extend ，可以当做一个伪类选择器，它需要精确匹配选择器
+
+例子：
+(1)
+.parent{
+  color:#f00;
+}
+
+.child1:extend(.parent){
+  background-color:#0f0;
+}
+
+或
+
+.parent{
+  color:#f00;
+}
+
+.child1{
+  &:extend(.parent);
+  background-color:#0f0;
+}
+
+解析成css如下：
+.parent,
+.child1 {
+  color: #f00;
+}
+.child1 {
+  background-color: #0f0;
+}
+
+(2) 嵌套继承
+.parent{
+  >span{
+    color:red;
+  }
+}
+
+.child:extend(.parent > span){
+
+}
+
+解析成css如下：
+.parent > span,
+.child {
+  color: red;
+}
+
+
+3.Mixins(混合)
+
+1).可以混合class选择器或则id选择器
+2).如果仅仅想要Mixins选择器，但是不想产生class/id选择器，可以在定义的时候带上括号：
+.my-other-mixin(){
+    color:#f00;
+}
+3).以下语法都可以：
+#a;
+#a();
+
+例子：
+(1).
+.a{
+  color:red;
+}
+
+#b(){    //由于带上了括号，并不会产生#b的选择器
+  background-color:blue;
+}
+
+p{
+  .a();
+  #b;
+}
+
+解析成css如下：
+.a {
+  color: red;
+}
+p {
+  color: red;
+  background-color: blue;
+}
+
+
+(2)
+#parent .child {
+  color: red;
+}
+h1 {
+  color: red;
+}
+
+4.带参数的Mixins,多个参数用分号！！！例子：
+(1)
+.border-radius(@radius){
+  -webkit-border-radius:@radius;
+  -moz-border-radius:@radius;
+  border-radius:@radius;
+}
+
+div{
+  .border-radius(4px);
+}
+
+解析成css如下：
+div {
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+(2)
+.border-radius(@radius:5px){   //带有一个默认值5px
+  -webkit-border-radius:@radius;
+  -moz-border-radius:@radius;
+  border-radius:@radius;
+}
+
+div{
+  .border-radius;
+}
+
+p{
+  .border-radius(7px);
+}
+
+解析成css如下：
+div {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+p {
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+}
+
+(3)多个参数用分号
+.fun(@color:red;@backgroundColor){  //注意是分号！！！
+  color: @color;
+  background-color:@backgroundColor;
+}
+
+
+div{
+  .fun(red;blue);   //注意是分号！！！
+}
+
+解析成css如下：
+div {
+  color: red;
+  background-color: blue;
+}
+
+(4)选择性传参
+#fun(@color:red;@backgroundColor:blue;@fontSize){
+  color:@color;
+  background-color:@backgroundColor;
+  font-size:@fontSize;
+}
+
+p{
+  #fun(@color:green;@fontSize: 14px;);
+}
+
+解析成css如下：
+p {
+  color: green;
+  background-color: blue;
+  font-size: 14px;
+}
+
+(5)@arguments
+#borderRadius(@topLeft:5px;@topRight:5px;@bottomRight:10px;@bottomLeft:10px;){
+  -webkit-border-radius:@arguments;
+  -moz-border-radius:@arguments;
+  border-radius:@arguments;
+}
+
+div{
+  #borderRadius;
+}
+
+解析成css如下：
+div {
+  -webkit-border-radius: 5px 5px 10px 10px;
+  -moz-border-radius: 5px 5px 10px 10px;
+  border-radius: 5px 5px 10px 10px;
+}
+
+
+5.注释
+//我是一行注释
+/*我是多行注释*/
+
+6.@import导入
+@import "lib"; //lib.less
+@import "lib.css"; //lib.css
+@import "lib.less"; //lib.less
+
+
+
+

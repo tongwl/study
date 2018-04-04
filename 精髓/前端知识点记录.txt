@@ -1,0 +1,116 @@
+1.content的用法
+1) content:文本内容
+:before{
+    content:"文本"
+}
+
+2) content:attr(属性名)
+:after{
+    content:attr(id)
+}
+
+3) content:url(路径)
+:before{
+    content:url(1.jpg)
+}
+
+2.<blockquote>表示引用一段长文本，比如一段话，一首诗，解析为缩进；
+  <q>表示引用一小段文字，如一句话，一句诗等短文本，解析为：双引号。
+
+3. <kbd>定义键盘文本，经常用于计算机相关的文档和手册中，例如：
+	键入<kbd>quit</kbd>来退出程序
+
+4.<pre> <code> 代码块
+
+5. <var>用于定义变量，通常显示为斜体
+
+6. <abbr title=""></abbr> 缩略语
+
+7.
+获取window对象：document.defaultView
+获取document对象：window.document、element.ownerDocument
+获取<html>元素：document.documentElement
+获取<body>元素：document.body
+获取<head>元素：document.head
+
+8.css3新属性：filter (滤镜)， 其默认值是none，他不具备继承性，其中filter-function一个具有以下值可选：
+grayscale灰度
+sepia褐色（求专业指点翻译）
+saturate饱和度
+hue-rotate色相旋转
+invert反色
+opacity透明度
+brightness亮度
+contrast对比度
+blur模糊
+drop-shadow阴影
+
+例子：图片灰显
+img {
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+}
+
+
+9.给 body 添加行高
+你不需要分别添加 line-height 到每个p,h标记等。只要添加到 body 即可：
+
+body {
+  line-height: 1;
+}
+这样文本元素就可以很容易地从 body 继承。
+
+10.display:flex;  //注意事项
+
+11. 对图标使用 SVG
+我们没有理由不对图标使用SVG：
+
+.logo {
+  background: url("logo.svg");
+}
+SVG对所有的分辨率类型都具有良好的扩展性，并支持所有浏览器都回归到IE9。这样可以避开.png、.jpg或.gif文件了。
+
+12. 继承 box-sizing
+让 box-sizing 继承 html：
+
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+
+13.table的css属性。
+
+14.css3的calc()的使用
+
+15.动画
+
+16.css3新属性 pointer.event:auto/none;
+
+pointer-event:none; //使点击效果无效，无视元素的存在，可以点击被元素覆盖住的元素。
+例子：
+    	<div class="bottom">
+            <a href="http://www.baidu.com">百度</a>
+     	</div>
+        <div class="top"></div> 
+
+        .bottom{
+            background:yellow;
+            width:100px;
+            height:100px;
+        }
+
+        .top{
+            width:100px;
+            height:100px;
+            position:absolute;
+            top:0;
+            left:0;
+            pointer-events:none;  //使得.top失效，即使top覆盖煮了bottom，也能直接透过top点击到bottom的a元素
+        }
