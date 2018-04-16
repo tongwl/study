@@ -1,0 +1,18 @@
+angular-resource :   //对restful友好的$http
+ 	引入js文件：angular-resource.js
+	angular.module('app',["ngResource"]);
+	$resource
+
+angular-ui-router :   //路由
+	引入js文件：angular-route.js
+	angular.module('app',["ui-router"]);
+	$state 
+
+ocLazyLoad :   //懒加载
+	引入js文件：ocLazyLoad.js
+	angular.module('app',['oc.lazyLoad']);	
+
+ngDialog :  //模态窗
+	引入文件：
+		ngDialog.js
+		ngDialog.css

@@ -1,0 +1,3 @@
+npm install package1 //安装一个包
+npm install package1 package2 //安装两个包
+npm install --production //添加了production  参数后将仅仅  安装  package.json 中dependencies 里面的包，不会安装devDependencies 里面的
