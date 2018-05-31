@@ -1,9 +1,17 @@
 一.原生dom
 DOM:Doument Object Model
 
+Node对象主要有以下6个子对象：
+类型			nodeName		nodeType
+Document		#document		9
+DocumentType		等同于DocumentType.name	10
+Element			大写的HTML元素名		1
+Attribute		等同于attr.name		2	
+Text			#text			3
+DocumentFragment	#document-fragment	11
 
 0.
-Documen类和Element类都继承了Node对象(Node.prototype)。
+Document类和Element类都继承了Node对象(Node.prototype)。
 获取document的方法：window.document，document对象的nodeType是9； //HTMLDocument
 获取<html>元素的方法：document.documentElement，element对象的nodeType是1；  //HTMLHtmlElement(它的父元素是HTMLElement)
 
@@ -165,7 +173,7 @@ document.createTextNode("文本内容"); //创建一个文本内容
 var frag=document.createDocumentFragment(); //创建一个临时节点（比如给ul添加多个li，作用就体现出来了）
 parent.appendChild(elem) //将elem追加到parent的末尾
 parent.insertBefore(_new,_old); //在parent对象中，将_new插入到_old之前
-parent.repalceChild(_new,_old);  //在parent对象中，用_new替换_old对象
+parent.replaceChild(_new,_old);  //在parent对象中，用_new替换_old对象
 parent.removeChild(elem); //删除节点
 element.cloneNode(true/false) //深拷贝还是浅拷贝
 

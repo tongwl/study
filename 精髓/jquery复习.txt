@@ -43,6 +43,7 @@ data()·½·¨ÄÜ¹»»ñÈ¡µ½html5µÄdata-*ÊôĞÔ£¬µ«ÊÇÍ¨¹ıdata(key,value)ÉèÖÃµÄdata-* ²¢²»Ê
 $('#d1').data('data-my-age',18);
 console.log($('#d1').data()); // {dataMyAge: 18} ,½ö½öÊÇ´æ´¢ÔÚjQueryÄÚ²¿data¶ÔÏóÉÏ
 $('#d1').removeData('data-my-age')  //¿ÉÒÔÉ¾³ıËü
+$('#d1').removeData('dataMyAge')  //Ò²¿ÉÒÔÉ¾³ıËü
 µ«ÊÇ¶ÔÓÚÒÑ¾­¶¨ÒåÔÚhtmlÔªËØ»òÔòÍ¨¹ısetAttribute()µÈ·½Ê½¶¨ÒåµÄdata-*µÄÊôĞÔ£¬Ö»ÄÜ±»data()·½·¨»ñÈ¡µ½£¬µ«ÊÇ²»ÄÜ±»removeData()·½·¨É¾³ı£¬Àı×Ó£º
 <div data-user-name="tongwl" id="d1">
 console.log($('#d1').data());//{userName: "tongwl"}
@@ -208,11 +209,12 @@ type:·µ»ØÄÚÈİ¸ñÊ½£¬xml, html, script, json, text, _default¡£
 
 5) jQuery.getJSON(url, [data], [callback])  //Í¨¹ı HTTP GET ÇëÇóÔØÈë JSON Êı¾İ¡£
 Àı×Ó£º
-$.getJSON("test.js", function(json){
+$.getJSON("test.json", function(json){
   alert("JSON Data: " + json.users[3].name);
 });
 
 6£©jQuery.getScript(url, [callback])  //Í¨¹ı HTTP GET ÇëÇóÔØÈë²¢Ö´ĞĞÒ»¸ö JavaScript ÎÄ¼ş¡£
+×¢ÒâÊÂÏî£ºÖ´ĞĞµÄjsÎÄ¼şÄÚ²¿µÄ·½·¨¡¢²ÎÊı½ö½öÔÚcallbackÖĞ¿ÉÒÔµ÷ÓÃ¡£
 Àı×Ó£º
  $.getScript("haha.js",function(){
             alert("load success");
