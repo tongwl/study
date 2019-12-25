@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>js save as pdf/png demo</title>
+  <script src="jquery.js"></script>
+  <script src="html2canvas.js"></script>
+  <script src="jspdf.js"></script>
+  <style>
+    button {
+      height: 40px;
+      font-size: 16px;
+    }
+
+    .father {
+      overflow: hidden;
+    }
+
+    .card {
+      position: relative;
+      float: left;
+      width: 500px;
+      height: 300px;
+      margin: 10px;
+      border: 1px solid #333;
+    }
+
+    .card h1 {
+      font-style: italic;
+    }
+
+    .card h2 {
+      background-color: #0f0;
+    }
+
+    .card p {
+      color: #f00;
+    }
+
+    .card a {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <button type="button" id="saveAsPDF">保存整个页面</button>
+  <button data-html2canvas-ignore>我有data-html2canvas-ignore属性，我是不会被保存成pdf的</button>
+  <div class="father">
+    <div class="card">
+      我是card1
+      <h1>card1内容1</h1>
+      <h2>card1内容2</h2>
+      <h3>card1内容3</h3>
+      <p>card1内容44444</p>
+      <a href="#">导出</a>
+    </div>
+
+    <div class="card">
+      我是card2
+      <h1>card2内容1</h1>
+      <h2>card2内容2</h2>
+      <h3>card2内容3</h3>
+      <p>card2内容44444</p>
+      <a href="#">导出</a>
+    </div>
+
+    <div class="card">
+      我是card3
+      <h1>card3内容1</h1>
+      <h2>card3内容2</h2>
+      <h3>card3内容3</h3>
+      <p>card3内容44444</p>
+      <a href="#">导出</a>
+    </div>
+
+    <div class="card">
+      我是card4
+      <h1>card4内容1</h1>
+      <h2>card4内容2</h2>
+      <h3>card4内容3</h3>
+      <p>card4内容44444</p>
+      <a href="#">导出</a>
+    </div>
+  </div>
+
+  <script>
+    $('.card a').click(function(event) {
+      const cardContainer = $(event.target).parents('.card');
+      const outerWidth = cardContainer.outerWidth();
+      const outerHeight = cardContainer.outerHeight();
+      html2canvas(cardContainer[0], {
+        width: outerWidth,
+        height: outerHeight,
+      }).then(canvas => {
+        const pageData = canvas.toDataURL('image/png');
+        const PDF = new jsPDF('p', 'px', 'a4');
+        const width = PDF.internal.pageSize.width;
+        const height = PDF.internal.pageSize.height;
+        if ((outerHeight * width) / outerWidth > height) {
+          PDF.addImage(pageData, 'PNG', 0, 0, (outerWidth * height) / outerHeight, height);
+        } else {
+          PDF.addImage(pageData, 'PNG', 0, 0, width, (outerHeight * width) / outerWidth);
+        }
+        PDF.save(`test.pdf`);
+      });
+    });
+
+    $('#saveAsPDF').click(function(event) {
+      html2canvas(document.body).then(canvas => {
+        // 要输出的 PDF 每页的宽高尺寸，单位是 pt
+        let pageWidth = 592.28; //841.89
+        let pageHeight =  841.89; //592.28
+
+        // 要打印内容，转换成 canvas 图片后的宽高尺寸
+        let contentWidth =  canvas.width * 3 / 4;
+        let contentHeight = canvas.height * 3 / 4;
+
+        // 将要打印内容的图片，等比例缩放至宽度等于输出时 PDF 每页的宽度，此时的图片宽
+        let imgWidth = pageWidth;
+        // 将要打印内容的图片，等比例缩放至宽度等于输出时 PDF 每页的宽度，此时的图片高
+        let imgHeight = pageWidth / contentWidth * contentHeight;
+
+        // 起始内容截取位置
+        let position = 0;
+        // 剩余未打印内容的高度
+        let leftHeight = imgHeight;
+
+        // 获取打印内容 canvas 图片元素
+        let pageData = canvas.toDataURL('image/jpeg', 1.0);
+
+        // 初始化 pdf 容器，三个参数分别是：纸张方向(填'',则是横向)、打印单位、纸张尺寸
+        let PDF = new jsPDF('', 'pt', 'a4');  //a4分页
+        //let PDF = new jsPDF('', 'pt', [imgWidth + 5, imgHeight + 20]); //不分页
+        PDF.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight);
+
+        /*************** 分页，如果不分页，那么就不需要这一块 **************/
+        // 循环截取打印内容并添加进容器
+        if (leftHeight < pageHeight) {
+          PDF.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight);
+        } else {
+          while (leftHeight > 0) {
+            PDF.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight);
+            leftHeight -= pageHeight;
+            position -= pageHeight;
+            if (leftHeight > 0) {
+              PDF.addPage();
+            }
+          }
+        }
+        PDF.save('wholePage.pdf');
+      });
+    });
+  </script>
+</body>
+</html>

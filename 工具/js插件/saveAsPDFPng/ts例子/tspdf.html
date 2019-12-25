@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>typescript-save as pdf</title>
+  <style>
+    button {
+      height: 40px;
+      font-size: 16px;
+    }
+
+    .father {
+      overflow: hidden;
+    }
+
+    .card {
+      position: relative;
+      float: left;
+      width: 500px;
+      height: 300px;
+      margin: 10px;
+      border: 1px solid #333;
+    }
+
+    .card h1 {
+      font-style: italic;
+    }
+
+    .card h2 {
+      background-color: #0f0;
+    }
+
+    .card p {
+      color: #f00;
+    }
+
+    .card a {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+  </style>
+</head>
+<body>
+<button type="button" id="saveAsPDF">保存整个页面</button>
+<button data-html2canvas-ignore>我有data-html2canvas-ignore属性，我是不会被保存成pdf的</button>
+<div class="father">
+  <div class="card">
+    我是card1
+    <h1>card1内容1</h1>
+    <h2>card1内容2</h2>
+    <h3>card1内容3</h3>
+    <p>card1内容44444</p>
+    <a href="#">导出</a>
+  </div>
+
+  <div class="card">
+    我是card2
+    <h1>card2内容1</h1>
+    <h2>card2内容2</h2>
+    <h3>card2内容3</h3>
+    <p>card2内容44444</p>
+    <a href="#">导出</a>
+  </div>
+
+  <div class="card">
+    我是card3
+    <h1>card3内容1</h1>
+    <h2>card3内容2</h2>
+    <h3>card3内容3</h3>
+    <p>card3内容44444</p>
+    <a href="#">导出</a>
+  </div>
+
+  <div class="card">
+    我是card4
+    <h1>card4内容1</h1>
+    <h2>card4内容2</h2>
+    <h3>card4内容3</h3>
+    <p>card4内容44444</p>
+    <a href="#">导出</a>
+  </div>
+</div>
+</body>
+</html>
