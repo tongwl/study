@@ -1,0 +1,6 @@
+一般常规使用jdk1.8的版本，类似于jdk-8u251这种开头的，
+如果连着翻墙vpn，可以考虑到oracle官网下载：
+https://www.oracle.com/java/technologies/javase-jdk8-downloads.html
+
+如果官网下载很慢，可以到国内的大公司站点下载，比如华为提供的：
+https://repo.huaweicloud.com/java/jdk/
